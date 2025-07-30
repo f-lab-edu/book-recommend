@@ -84,6 +84,11 @@ export const globalStyles = css`
     box-sizing: border-box;
   }
 
+  html, body{
+    width: 100%;
+    height: 100%;
+  }
+
   body {
     font-family: "Pretendard", sans-serif;
     font-size: 16px;
