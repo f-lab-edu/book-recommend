@@ -6,7 +6,7 @@ type IntersectionObserverProps = {
 }
 
 export function useIntersectionObserver({ onIntersect, options }: IntersectionObserverProps) {
-  const observerRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!observerRef.current) return;
@@ -23,5 +23,5 @@ export function useIntersectionObserver({ onIntersect, options }: IntersectionOb
     return () => observer.disconnect();
   }, [onIntersect, options]);
 
-  return observerRef;
+  return { observerRef };
 }
