@@ -1,4 +1,5 @@
 import BookDetail from "./BookDetail";
+import BookDetailSkeleton from "./BookDetailSkeleton";
 import useStepNavigation from "@/hooks/useStepNavigation";
 import SuspenseBoundary from "../common/SuspenseBoundary";
 import { bookStepperButtonWrapperStyle, bookStepperContainerStyle, bookStepperContentStyle } from "@/styles/bookStepper.styles";
@@ -21,7 +22,7 @@ export default function BookEvaluationStepper({ isbn, step }: { isbn: string, st
   return (
     <div css={bookStepperContainerStyle}>
       <div css={bookStepperContentStyle}>
-        <SuspenseBoundary>
+        <SuspenseBoundary loading={<BookDetailSkeleton />}>
           <BookDetail isbn={isbn} />
         </SuspenseBoundary>
         <StepComponent />

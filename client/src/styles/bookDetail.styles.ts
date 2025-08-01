@@ -111,3 +111,82 @@ export const isbnStyle = css`
   color: #999;
   margin: 0;
 `;
+
+// Skeleton styles
+export const skeletonAnimation = css`
+  @keyframes shimmer {
+    0% {
+      background-position: -200px 0;
+    }
+    100% {
+      background-position: calc(200px + 100%) 0;
+    }
+  }
+`;
+
+export const skeletonBase = css`
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+`;
+
+export const skeletonCover = css`
+  ${skeletonBase}
+  width: 100px;
+  height: 140px;
+`;
+
+export const skeletonTitle = css`
+  ${skeletonBase}
+  height: 24px;
+  width: 80%;
+  margin-bottom: 8px;
+`;
+
+export const skeletonText = css`
+  ${skeletonBase}
+  height: 16px;
+  width: 60%;
+  margin-bottom: 8px;
+`;
+
+export const skeletonTextShort = css`
+  ${skeletonBase}
+  height: 16px;
+  width: 40%;
+  margin-bottom: 8px;
+`;
+
+export const skeletonContentTitle = css`
+  ${skeletonBase}
+  height: 20px;
+  width: 30%;
+  margin-bottom: 12px;
+`;
+
+export const skeletonContentLine = css`
+  ${skeletonBase}
+  height: 16px;
+  width: 100%;
+  margin-bottom: 8px;
+`;
+
+export const skeletonContentLineShort = css`
+  ${skeletonBase}
+  height: 16px;
+  width: 70%;
+  margin-bottom: 8px;
+`;
+
+export const skeletonPrice = css`
+  ${skeletonBase}
+  height: 20px;
+  width: 80px;
+`;
+
+export const skeletonIsbn = css`
+  ${skeletonBase}
+  height: 14px;
+  width: 120px;
+`;
