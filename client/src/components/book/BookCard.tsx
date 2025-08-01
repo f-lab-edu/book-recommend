@@ -11,7 +11,7 @@ type BookCardProps = {
 
 const BookCard = ({ book }: BookCardProps) => {
   return (
-    <Link href={`/books/${concatIsbn(book.isbn)}?step=1`} passHref>
+    <Link href={`/books/${concatIsbn(book.isbn)}?step=1`}>
       <div css={bookCardStyle}>
         <div css={bookImageContainerStyle}>
           <Image src={book.thumbnail} alt={book.title} width={100} height={100} />
