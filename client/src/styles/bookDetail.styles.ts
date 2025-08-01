@@ -1,12 +1,7 @@
 import { css } from "@emotion/react";
 
-export const containerStyle = css`
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-`;
-
 export const cardStyle = css`
+  width: 600px;
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
