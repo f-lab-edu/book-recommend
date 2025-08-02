@@ -1,5 +1,6 @@
+import BookList from "@/components/book/BookList";
+import SuspenseBoundary from "@/components/common/SuspenseBoundary";
 import Head from "next/head";
-import Image from "next/image";
 
 export default function Home() {
   return (
@@ -9,7 +10,10 @@ export default function Home() {
         <meta name="description" content="Book Recommend to Frontend Developer" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      HOME
+
+      <SuspenseBoundary>
+        <BookList />
+      </SuspenseBoundary>
     </>
   );
 }
