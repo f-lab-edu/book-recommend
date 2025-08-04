@@ -1,17 +1,24 @@
-import { STEP_COMPONENTS } from "@/components/book/BookEvaluationStepper";
-import { useSearchParams, useParams, redirect } from "next/navigation";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export function useStepValidation() {
-  const { isbn } = useParams();
-  const searchParams = useSearchParams();
-  const step = searchParams.get("step");
+  const router = useRouter();
+  const { isbn, step, isReady } = router.query;
 
-  if (!step || !Object.keys(STEP_COMPONENTS).includes(step)) {
-    redirect(`/books/${isbn}?step=1`);
-  }
+  useEffect(() => {
+    if (!isReady) {
+      console.error('router is not ready');
+    }
+
+    if (isbn == null || isbn == '') {
+      throw new Error('isbn 번호가 없습니다.');
+    }
+
+  }, [isReady, isbn, router]);
+
 
   return {
-    step,
+    step: (step as string) || '1',
     isbn: isbn as string,
-  };
+  }
 } 

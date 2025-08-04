@@ -7,6 +7,10 @@ import { useBookDetail } from "@/hooks/useBooks";
 export default React.memo(function BookDetail({ isbn }: { isbn: string }) {
   const { data: book } = useSuspenseQuery(useBookDetail(deConcatIsbn(isbn)));
 
+  if (book == null) {
+    throw new Error('존재하지 않는 도서 입니다.');
+  }
+
   return (
     <div css={cardStyle}>
       <div css={headerStyle}>
