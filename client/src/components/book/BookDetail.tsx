@@ -2,21 +2,16 @@ import { cardStyle, headerStyle, coverStyle, imageStyle, placeholderStyle, infoS
 import { deConcatIsbn, formatDate } from "@/utils/utils";
 import React from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useBookQueries } from "@/hooks/useBookQueries";
-import { redirect } from "next/navigation";
+import { useBookDetail } from "@/hooks/useBooks";
 
 export default React.memo(function BookDetail({ isbn }: { isbn: string }) {
-  const { data: book } = useSuspenseQuery(useBookQueries().detail(deConcatIsbn(isbn)));
-
-  if (book == null) {
-    redirect('/')
-  }
+  const { data: book } = useSuspenseQuery(useBookDetail(deConcatIsbn(isbn)));
 
   return (
     <div css={cardStyle}>
       <div css={headerStyle}>
         <div css={coverStyle}>
-          {book.thumbnail ? (
+          {book.thumbnail != '' ? (
             <img
               src={book.thumbnail}
               alt={book.title}
