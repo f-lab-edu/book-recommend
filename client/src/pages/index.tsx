@@ -1,4 +1,5 @@
 import BookList from "@/components/book/BookList";
+import { BookListErrorFallback } from "@/components/common/ErrorFallbacks";
 import SuspenseBoundary from "@/components/common/SuspenseBoundary";
 import Head from "next/head";
 
@@ -11,7 +12,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <SuspenseBoundary>
+      <SuspenseBoundary
+        rejectedFallback={BookListErrorFallback}
+      >
         <BookList />
       </SuspenseBoundary>
     </>

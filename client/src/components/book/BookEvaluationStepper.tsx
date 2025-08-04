@@ -5,6 +5,7 @@ import SuspenseBoundary from "../common/SuspenseBoundary";
 import { bookStepperButtonWrapperStyle, bookStepperContainerStyle, bookStepperContentStyle } from "@/styles/bookStepper.styles";
 import SwitchCases from "../common/SwitchCases";
 import { useStepValidation } from "@/hooks/useStepValidation";
+import { BookDetailErrorFallback } from "../common/ErrorFallbacks";
 
 export const STEP_COMPONENTS = {
   '1': <div>평가 폼0 (구현 예정)</div>,
@@ -17,14 +18,17 @@ export const STEP_COMPONENTS = {
 export default function BookEvaluationStepper() {
   const minStep = 1;
   const maxStep = Object.keys(STEP_COMPONENTS).length;
-  
+
   const { step, isbn } = useStepValidation();
   const { handlePrevious, handleNext } = useStepNavigation({ isbn, step, minStep, maxStep });
 
   return (
     <div css={bookStepperContainerStyle}>
       <div css={bookStepperContentStyle}>
-        <SuspenseBoundary loading={<BookDetailSkeleton />}>
+        <SuspenseBoundary
+          loading={<BookDetailSkeleton />}
+          rejectedFallback={BookDetailErrorFallback}
+        >
           <BookDetail isbn={isbn} />
         </SuspenseBoundary>
 

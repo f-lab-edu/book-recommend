@@ -1,10 +1,14 @@
 import BookEvaluationStepper from "@/components/book/BookEvaluationStepper";
-import { useStepValidation } from "@/hooks/useStepValidation";
+import { BookDetailErrorFallback } from "@/components/common/ErrorFallbacks";
+import SuspenseBoundary from "@/components/common/SuspenseBoundary";
 
 export default function BookDetailPage() {
-  const { step, isbn } = useStepValidation();
 
   return (
-    <BookEvaluationStepper step={step} isbn={isbn} />
+    <SuspenseBoundary
+      rejectedFallback={BookDetailErrorFallback}
+    >
+      <BookEvaluationStepper />
+    </SuspenseBoundary>
   )
 } 
