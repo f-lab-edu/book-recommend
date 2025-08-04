@@ -4,12 +4,11 @@ import { bookCardStyle, bookImageContainerStyle } from "@/styles/bookList.styles
 import Link from "next/link"
 import { concatIsbn } from "@/utils/utils"
 
-
 type BookCardProps = {
   book: Book
 }
 
-const BookCard = ({ book }: BookCardProps) => {
+const BookCard = React.memo(({ book }: BookCardProps) => {
   return (
     <Link href={`/books/${concatIsbn(book.isbn)}?step=1`}>
       <div css={bookCardStyle}>
@@ -23,6 +22,13 @@ const BookCard = ({ book }: BookCardProps) => {
       </div>
     </Link>
   )
-}
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.book.title === nextProps.book.title &&
+    prevProps.book.sale_price === nextProps.book.sale_price &&
+    prevProps.book.thumbnail === nextProps.book.thumbnail &&
+    prevProps.book.status === nextProps.book.status
+  );
+})
 
 export default BookCard
