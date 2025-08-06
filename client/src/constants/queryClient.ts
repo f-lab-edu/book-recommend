@@ -1,4 +1,4 @@
-import { isServer, QueryClient } from "@tanstack/react-query";
+import { isServer, QueryClient, QueryClientConfig } from "@tanstack/react-query";
 
 let clientQueryClient: QueryClient | null = null;
 const defaultOptions = {
@@ -8,16 +8,22 @@ const defaultOptions = {
   },
 };
 
-export const createQueryClient = () => {
+type CreateQueryClientOptions = {
+  customDefaultOptions?: QueryClientConfig['defaultOptions'];
+}
+
+export const createQueryClient = ({ customDefaultOptions }: CreateQueryClientOptions = {}) => {
   if (isServer) {
     return new QueryClient({
       defaultOptions,
+      ...customDefaultOptions,
     });
   }
 
   if (clientQueryClient == null) {
     clientQueryClient = new QueryClient({
       defaultOptions,
+      ...customDefaultOptions,
     });
   }
 
