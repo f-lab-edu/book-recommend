@@ -3,7 +3,7 @@ import { theme } from '@/theme';
 import { css } from '@emotion/react';
 import DropDownList from './DropDownList';
 import { useRef } from 'react';
-import useCloseOnClickOutside from '@/hooks/useCloseOnClickOutside';
+import useClickOutside from '@/hooks/useClickOutside';
 
 type DropDownProps = {
   options: readonly { label: string; value: string }[];
@@ -17,7 +17,7 @@ export default function DropDown({ options, defalutValue, onChange }: DropDownPr
     defalutValue,
     onChange,
   });
-  useCloseOnClickOutside({ ref: dropDownRef, callback: handleClickDropClose });
+  useClickOutside({ ref: dropDownRef, callback: handleClickDropClose });
 
   return (
     <div
