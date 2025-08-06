@@ -1,3 +1,12 @@
+export type BookApiResponse = {
+  documents: Book[];
+  meta: {
+    is_end: boolean;
+    pageable_count: number;
+    total_count: number;
+  };
+}
+
 export type Book = {
   title: string;
   authors: string[];
