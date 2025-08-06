@@ -1,23 +1,23 @@
-import useDropDownManage from '@/hooks/useDropDownManage';
+import useDropdown from '@/hooks/useDropdownState';
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
-import DropDownList from './DropDownList';
+import DropdownList from './DropdownList';
 import { useRef } from 'react';
 import useClickOutside from '@/hooks/useClickOutside';
 
-type DropDownProps = {
+type DropdownProps = {
   options: readonly { label: string; value: string }[];
-  defalutValue?: string;
+  defaultValue?: string;
   onChange: (value: string) => void;
 };
 
-export default function DropDown({ options, defalutValue, onChange }: DropDownProps) {
+export default function Dropdown({ options, defaultValue, onChange }: DropdownProps) {
   const dropDownRef = useRef<HTMLDivElement>(null);
-  const { isOpen, activeValue, handleDropDownOpen, handleClickDropClose, handleClickItem } = useDropDownManage({
-    defalutValue,
+  const { isOpen, activeValue, handleDropdownOpen, handleDropdownClose, handleItemSelect } = useDropdown({
+    defaultValue,
     onChange,
   });
-  useClickOutside({ ref: dropDownRef, callback: handleClickDropClose });
+  useClickOutside({ ref: dropDownRef, callback: handleDropdownClose });
 
   return (
     <div
@@ -31,15 +31,15 @@ export default function DropDown({ options, defalutValue, onChange }: DropDownPr
         cursor: pointer;
       `}
       ref={dropDownRef}
-      onClick={handleDropDownOpen}
+      onClick={handleDropdownOpen}
     >
       {isOpen ? (
-        <DropDownList
+        <DropdownList
           options={options}
-          handleClick={handleClickItem}
+          handleClick={handleItemSelect}
         />
       ) : (
-        <span>{activeValue || defalutValue || options[0].label}</span>
+        <span>{activeValue || defaultValue || options[0].label}</span>
       )}
     </div>
   );

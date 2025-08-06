@@ -1,36 +1,27 @@
-import { handleClickItemType } from '@/hooks/useDropDownManage';
+import { HandleItemSelectType } from '@/hooks/useDropdownState';
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
 
-type DropDownItemProps = {
+type DropdownItemProps = {
   label: string;
   value: string;
-  handleClick: handleClickItemType;
+  handleClick: HandleItemSelectType;
 };
 
-export default function DropDownItem({ label, value, handleClick }: DropDownItemProps) {
+export default function DropdownItem({ label, value, handleClick }: DropdownItemProps) {
   return (
-    <li
-      key={value}
-      className="drop-down-item"
+    <div
       css={css`
         padding: ${theme.spacing.sm} ${theme.spacing.md};
-        border-bottom: 1px solid ${theme.colors.secondary};
-        font-size: ${theme.fontSize.sm};
-        &:last-child {
-          border-bottom: none;
-        }
+        cursor: pointer;
+        transition: background-color 0.2s ease;
         &:hover {
-          background-color: ${theme.colors.primary};
-          color: white;
+          background-color: ${theme.colors.secondary};
         }
       `}
-      onClick={(ev) => {
-        ev.stopPropagation();
-        handleClick({ label, value });
-      }}
+      onClick={() => handleClick({ label, value })}
     >
       {label}
-    </li>
+    </div>
   );
 }

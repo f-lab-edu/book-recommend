@@ -1,34 +1,38 @@
-import { css } from '@emotion/react';
-import DropDownItem from './DropDownItem';
-import { handleClickItemType } from '@/hooks/useDropDownManage';
+import { HandleItemSelectType } from '@/hooks/useDropdownState';
+import DropdownItem from './DropdownItem';
 import { theme } from '@/theme';
+import { css } from '@emotion/react';
 
-type DropDownListProps = {
+type DropdownListProps = {
   options: readonly { label: string; value: string }[];
-  handleClick: handleClickItemType;
+  handleClick: HandleItemSelectType;
 };
 
-export default function DropDownList({ options, handleClick }: DropDownListProps) {
+export default function DropdownList({ options, handleClick }: DropdownListProps) {
   return (
-    <ul
+    <div
       css={css`
         position: absolute;
-        top: 40px;
+        top: 100%;
         left: 0;
-        width: 100%;
-        background-color: white;
-        border-radius: ${theme.borderRadius.sm};
-        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+        right: 0;
+        background: white;
+        border: 1px solid ${theme.colors.primary};
+        border-top: none;
+        border-radius: 0 0 ${theme.borderRadius.sm} ${theme.borderRadius.sm};
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
       `}
     >
-      {options.map(({ label, value }) => (
-        <DropDownItem
-          key={value}
-          label={label}
-          value={value}
+      {options.map((option) => (
+        <DropdownItem
+          key={option.value}
+          label={option.label}
+          value={option.value}
           handleClick={handleClick}
         />
       ))}
-    </ul>
+    </div>
   );
 }
