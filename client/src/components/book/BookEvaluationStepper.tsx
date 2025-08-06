@@ -6,9 +6,10 @@ import { bookStepperButtonWrapperStyle, bookStepperContainerStyle, bookStepperCo
 import SwitchCases from "../common/SwitchCases";
 import { useStepValidation } from "@/hooks/useStepValidation";
 import { BookDetailErrorFallback } from "../common/ErrorFallbacks";
+import BookStatusPeriodValidation from "../evaluation/BookStatusPeriodValidation";
 
 export const STEP_COMPONENTS = {
-  '1': <div>평가 폼0 (구현 예정)</div>,
+  '1': <BookStatusPeriodValidation />,
   '2': <div>평가 폼1 (구현 예정)</div>,
   '3': <div>평가 폼2 (구현 예정)</div>,
   '4': <div>평가 폼3 (구현 예정)</div>,
