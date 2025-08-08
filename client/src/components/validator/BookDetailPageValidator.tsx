@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useStepValidation } from "@/hooks/useStepValidation";
 import { css } from "@emotion/react";
+import { useEffect } from "react";
 
 // 페이지 진입 시 client 환경에서 유효성 검사를 위한 컴포넌트
 export default function BookDetailPageValidator({
@@ -9,24 +10,7 @@ export default function BookDetailPageValidator({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { isValid, error, isLoading } = useStepValidation();
-
-  if (isLoading) {
-    return (
-      <div
-        css={css`
-          padding: 40px 20px;
-          text-align: center;
-          min-height: 200px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        `}
-      >
-        <div>로딩 중...</div>
-      </div>
-    );
-  }
+  const { isValid, error } = useStepValidation();
 
   if (!isValid) {
     return (
