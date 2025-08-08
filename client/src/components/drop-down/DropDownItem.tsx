@@ -19,7 +19,10 @@ export default function DropdownItem({ label, value, handleClick }: DropdownItem
           background-color: ${theme.colors.secondary};
         }
       `}
-      onClick={() => handleClick({ label, value })}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleClick({ label, value });
+      }}
     >
       {label}
     </div>
