@@ -1,11 +1,16 @@
-import { useBookQueries } from '@/hooks/useBookQueries';
+import { useBookList } from '@/hooks/useBooks';
 import BookCard from './BookCard';
 import { bookListStyle } from '@/styles/bookList.styles';
 import InfiniteScroll from '../common/InfiniteScroll';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 
 const BookList = () => {
-  const { data: books, isFetchingNextPage, fetchNextPage, hasNextPage } = useSuspenseInfiniteQuery(useBookQueries().infinite('react'));
+  const {
+    data: books,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage
+  } = useSuspenseInfiniteQuery(useBookList('react'));
 
   if (books.length === 0) {
     return <div>도서가 없습니다.</div>;
