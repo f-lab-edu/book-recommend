@@ -3,6 +3,7 @@ import { Book } from "@/types/book"
 import { bookCardStyle, bookImageContainerStyle } from "@/styles/bookList.styles"
 import Link from "next/link"
 import { concatIsbn } from "@/utils/utils"
+import React from "react"
 
 type BookCardProps = {
   book: Book
@@ -30,5 +31,7 @@ const BookCard = React.memo(({ book }: BookCardProps) => {
     prevProps.book.status === nextProps.book.status
   );
 })
+
+BookCard.displayName = 'BookCard'
 
 export default BookCard
