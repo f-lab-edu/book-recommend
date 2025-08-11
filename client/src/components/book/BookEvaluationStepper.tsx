@@ -21,7 +21,7 @@ export default function BookEvaluationStepper() {
           loading={<BookDetailSkeleton />}
           rejectedFallback={BookDetailErrorFallback}
         >
-          <BookDetail isbn={isbn} />
+          <BookDetail isbn={isbn as string} />
         </SuspenseBoundary>
 
         <FormProvider {...form}>
