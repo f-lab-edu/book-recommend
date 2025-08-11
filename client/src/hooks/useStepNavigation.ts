@@ -1,6 +1,16 @@
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
-export default function useStepNavigation({ isbn, step, minStep, maxStep }: { isbn: string, step: string, minStep: number, maxStep: number }) {
+export default function useStepNavigation({
+  isbn,
+  step,
+  minStep,
+  maxStep,
+}: {
+  isbn: string;
+  step: string;
+  minStep: number;
+  maxStep: number;
+}) {
   const router = useRouter();
 
   const handlePrevious = () => {
@@ -9,14 +19,14 @@ export default function useStepNavigation({ isbn, step, minStep, maxStep }: { is
       return;
     }
     router.push(`/books/${isbn}?step=${previousStep}`);
-  }
-  const handleNext = () => {
+  };
+  const goNext = () => {
     const nextStep = Number(step) + 1;
     if (nextStep > maxStep) {
       return;
     }
     router.push(`/books/${isbn}?step=${nextStep}`);
-  }
+  };
 
-  return { handlePrevious, handleNext };
+  return { handlePrevious, goNext };
 }

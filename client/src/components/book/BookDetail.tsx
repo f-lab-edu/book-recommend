@@ -1,10 +1,33 @@
-import { cardStyle, headerStyle, coverStyle, imageStyle, placeholderStyle, infoStyle, titleStyle, textStyle, contentStyle, contentTitleStyle, contentTextStyle, footerStyle, priceStyle, priceTextStyle, salePriceStyle, isbnStyle } from "@/styles/bookDetail.styles";
-import { deConcatIsbn, formatDate } from "@/utils/utils";
-import React from "react";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { useBookDetail } from "@/hooks/useBooks";
+'use client';
+
+import {
+  cardStyle,
+  headerStyle,
+  coverStyle,
+  imageStyle,
+  placeholderStyle,
+  infoStyle,
+  titleStyle,
+  textStyle,
+  contentStyle,
+  contentTitleStyle,
+  contentTextStyle,
+  footerStyle,
+  priceStyle,
+  priceTextStyle,
+  salePriceStyle,
+  isbnStyle,
+} from '@/styles/bookDetail.styles';
+import { deConcatIsbn, formatDate } from '@/utils/utils';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { useBookDetail } from '@/hooks/useBooks';
+import React from 'react';
 
 export default React.memo(function BookDetail({ isbn }: { isbn: string }) {
+  if (isbn == null) {
+    return null;
+  }
+
   const { data: book } = useSuspenseQuery(useBookDetail(deConcatIsbn(isbn)));
 
   if (book == null) {
@@ -27,7 +50,7 @@ export default React.memo(function BookDetail({ isbn }: { isbn: string }) {
         </div>
         <div css={infoStyle}>
           <h1 css={titleStyle}>{book.title}</h1>
-          <p css={textStyle}>저자: {book.authors.join(", ")}</p>
+          <p css={textStyle}>저자: {book.authors.join(', ')}</p>
           <p css={textStyle}>출판사: {book.publisher}</p>
           <p css={textStyle}>출판일: {formatDate(book.datetime)}</p>
         </div>
@@ -42,11 +65,13 @@ export default React.memo(function BookDetail({ isbn }: { isbn: string }) {
         <div css={priceStyle}>
           <span css={priceTextStyle}>₩{book.price.toLocaleString()}</span>
           {book.sale_price !== book.price && (
-            <span css={salePriceStyle}>₩{book.sale_price.toLocaleString()}</span>
+            <span css={salePriceStyle}>
+              ₩{book.sale_price.toLocaleString()}
+            </span>
           )}
         </div>
         <p css={isbnStyle}>ISBN: {book.isbn}</p>
       </div>
     </div>
-  )
+  );
 });

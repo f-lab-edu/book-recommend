@@ -1,8 +1,8 @@
-import { BookApiResponse } from "@/types/book";
-import { getBookDetail, getBookList } from "@/remotes/book";
-import { InfiniteData } from "@tanstack/react-query";
+import { BookApiResponse } from '@/types/book';
+import { getBookDetail, getBookList } from '@/remotes/book';
+import { InfiniteData } from '@tanstack/react-query';
 
-const QUERY_KEYS = {
+export const QUERY_KEYS = {
   BOOK: 'book',
   DETAIL: 'detail',
   INFINITE: 'infinite',
