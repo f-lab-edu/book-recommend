@@ -1,8 +1,9 @@
-import { GetServerSideProps } from "next";
-import { QueryClient } from "@tanstack/react-query";
-import { dehydrate } from "@tanstack/react-query";
-import { useBookDetail } from "@/hooks/useBooks";
-import { deConcatIsbn } from "@/utils/utils";
+import { GetServerSideProps } from 'next';
+import { QueryClient } from '@tanstack/react-query';
+import { dehydrate } from '@tanstack/react-query';
+import { getBookDetail } from '@/remotes/book';
+import { QUERY_KEYS } from '@/hooks/useBooks';
+import { deConcatIsbn } from './utils';
 
 export const createBookDetailServerSideProps = (): GetServerSideProps => {
   return async ({ params, query }) => {
@@ -11,10 +12,10 @@ export const createBookDetailServerSideProps = (): GetServerSideProps => {
     const step = query?.step as string;
 
     // 서버 사이드 validation
-    if (!isbn || isbn === "") {
+    if (isbn == null || isbn === '') {
       return {
         redirect: {
-          destination: "/",
+          destination: '/',
           permanent: false,
         },
       };
@@ -30,8 +31,13 @@ export const createBookDetailServerSideProps = (): GetServerSideProps => {
       };
     }
 
+    const splitedIsbn = deConcatIsbn(isbn);
+
     // 데이터 prefetch
-    await queryClient.prefetchQuery(useBookDetail(deConcatIsbn(isbn)));
+    await queryClient.prefetchQuery({
+      queryKey: [QUERY_KEYS.BOOK, QUERY_KEYS.DETAIL, splitedIsbn] as const,
+      queryFn: () => getBookDetail(splitedIsbn),
+    });
 
     return {
       props: {
