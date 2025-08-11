@@ -17,7 +17,6 @@ export default function DropdownList({ options, handleClick }: DropdownListProps
         left: 0;
         right: 0;
         background: white;
-        border: 1px solid ${theme.colors.primary};
         border-top: none;
         border-radius: 0 0 ${theme.borderRadius.sm} ${theme.borderRadius.sm};
         max-height: 200px;

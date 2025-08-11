@@ -4,6 +4,7 @@ export const theme = {
     secondary: '#6c757d',
     background: '#ffffff',
     text: '#333333',
+    error: '#dc3545',
   },
   fontSize: {
     xs: '12px',

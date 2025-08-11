@@ -9,9 +9,10 @@ type DropdownProps = {
   options: readonly { label: string; value: string }[];
   defaultValue?: string;
   onChange: (value: string) => void;
+  isError?: boolean;
 };
 
-export default function Dropdown({ options, defaultValue, onChange }: DropdownProps) {
+export default function Dropdown({ options, defaultValue, onChange, isError }: DropdownProps) {
   const dropDownRef = useRef<HTMLDivElement>(null);
   const { isOpen, activeValue, handleDropdownOpen, handleDropdownClose, handleItemSelect } = useDropdown({
     defaultValue,
@@ -25,7 +26,7 @@ export default function Dropdown({ options, defaultValue, onChange }: DropdownPr
         position: relative;
         height: 40px;
         width: 100%;
-        border: 1px solid ${theme.colors.primary};
+        border: 1px solid ${isError ? theme.colors.error : theme.colors.primary};
         border-radius: ${theme.borderRadius.sm};
         padding: ${theme.spacing.sm} ${theme.spacing.md};
         cursor: pointer;
@@ -39,7 +40,7 @@ export default function Dropdown({ options, defaultValue, onChange }: DropdownPr
           handleClick={handleItemSelect}
         />
       ) : (
-        <span>{activeValue || defaultValue || options[0].label}</span>
+        <span>{activeValue || defaultValue || '선택'}</span>
       )}
     </div>
   );
