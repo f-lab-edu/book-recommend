@@ -1,13 +1,26 @@
-import BookDetail from './BookDetail';
 import BookDetailSkeleton from './BookDetailSkeleton';
 import SuspenseBoundary from '../common/SuspenseBoundary';
-import { bookStepperContainerStyle, bookStepperContentStyle } from '@/styles/bookStepper.styles';
+import {
+  bookStepperContainerStyle,
+  bookStepperContentStyle,
+} from '@/styles/bookStepper.styles';
 import SwitchCases from '../common/SwitchCases';
 import { useStepValidation } from '@/hooks/useStepValidation';
-import { BookDetailErrorFallback } from '../common/ErrorFallbacks';
 import BookStatusPeriodValidation from '../evaluation/BookStatusPeriodValidation';
 import { FormProvider, useForm } from 'react-hook-form';
 import StepperNavigation from './StepperNavigation';
+import dynamic from 'next/dynamic';
+import BookDetail from './BookDetail';
+
+const BookDetailErrorFallback = dynamic(
+  () =>
+    import('../common/ErrorFallbacks').then(
+      (mod) => mod.BookDetailErrorFallback,
+    ),
+  {
+    ssr: false,
+  },
+);
 
 export default function BookEvaluationStepper() {
   const { step, isbn } = useStepValidation();
@@ -19,14 +32,14 @@ export default function BookEvaluationStepper() {
       <div css={bookStepperContentStyle}>
         <SuspenseBoundary
           loading={<BookDetailSkeleton />}
-          rejectedFallback={BookDetailErrorFallback}
+          rejectedFallback={(props) => <BookDetailErrorFallback {...props} />}
         >
           <BookDetail isbn={isbn as string} />
         </SuspenseBoundary>
 
         <FormProvider {...form}>
           <SwitchCases
-            value={step}
+            value={step as string}
             cases={{
               '1': <BookStatusPeriodValidation />,
               '2': <div>평가 폼1 (구현 예정)</div>,
