@@ -4,6 +4,14 @@ export const theme = {
     secondary: '#6c757d',
     background: '#ffffff',
     text: '#333333',
+    error: '#dc3545',
+  },
+  fontSize: {
+    xs: '12px',
+    sm: '14px',
+    md: '18px',
+    lg: '20px',
+    xl: '24px',
   },
   spacing: {
     xs: '4px',
@@ -12,9 +20,15 @@ export const theme = {
     lg: '24px',
     xl: '32px',
   },
+  borderRadius: {
+    sm: '4px',
+    md: '8px',
+    lg: '16px',
+    xl: '24px',
+  },
   breakpoints: {
     mobile: '@media (max-width: 767px)',
     tablet: '@media (min-width: 768px) and (max-width: 1023px)',
-    desktop: '@media (min-width: 1024px)'
+    desktop: '@media (min-width: 1024px)',
   },
 };
