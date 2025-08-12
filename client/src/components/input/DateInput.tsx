@@ -1,6 +1,6 @@
-import { ComponentPropsWithRef } from 'react';
+import { ComponentPropsWithoutRef } from 'react';
 
-type DateInputProps = ComponentPropsWithRef<'input'> & {
+type DateInputProps = ComponentPropsWithoutRef<'input'> & {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string | number | readonly string[] | undefined;
   disabled: boolean;
