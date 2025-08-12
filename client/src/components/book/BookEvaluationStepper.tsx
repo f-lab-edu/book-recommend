@@ -10,7 +10,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import StepperNavigation from './StepperNavigation';
 import dynamic from 'next/dynamic';
 import BookDetail from './BookDetail';
-import BookStatusPeriodStep from '../evaluation/BookStatusPeriodValidation';
+import BookStatusPeriodStep from '../evaluation/BookStatusPeriodStep';
 
 const BookDetailErrorFallback = dynamic(
   () =>

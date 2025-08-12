@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
 import { theme } from '@/theme';
-import BookStatusSection from './BookStatusSection';
-import BookPeriodSection from './BookPeriodSection';
+import BookStatusField from './BookStatusField';
+import BookPeriodField from './BookPeriodField';
+
 import { BOOK_STATUS_OPTIONS } from '@/constants/book';
 
 // STATUS_OPTIONS의 value 값들을 타입으로 추출
@@ -64,8 +65,8 @@ export default function BookStatusPeriodStep() {
         margin: ${theme.spacing.lg} 0;
       `}
     >
-      <BookStatusSection />
-      <BookPeriodSection />
+      <BookStatusField />
+      <BookPeriodField />
     </form>
   );
 }

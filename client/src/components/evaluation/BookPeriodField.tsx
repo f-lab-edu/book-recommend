@@ -38,7 +38,7 @@ const getPeriodRequiredStatus = (status: BookStatus) => {
   }
 };
 
-export default function BookPeriodSection() {
+export default function BookPeriodField() {
   const {
     watch,
     formState: { errors },

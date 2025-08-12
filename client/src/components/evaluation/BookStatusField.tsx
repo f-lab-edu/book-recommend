@@ -4,9 +4,9 @@ import Dropdown from '../drop-down/Dropdown';
 import ErrorMessage from '../common/ErrorMessage';
 import BookStatusPeriodStep, {
   BookStatusFormData,
-} from './BookStatusPeriodValidation';
+} from './BookStatusPeriodStep';
 
-export default function BookStatusSection() {
+export default function BookStatusField() {
   const {
     control,
     formState: { errors },

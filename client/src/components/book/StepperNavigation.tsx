@@ -5,7 +5,7 @@ import { SubmitHandler, useFormContext } from 'react-hook-form';
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
 import { getNextButtonDisabled } from '@/utils/validates';
-import { BookStatusFormData } from '../evaluation/BookStatusPeriodValidation';
+import { BookStatusFormData } from '../evaluation/BookStatusPeriodStep';
 
 export default function StepperNavigation() {
   const router = useRouter();
