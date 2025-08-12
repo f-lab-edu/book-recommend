@@ -6,11 +6,11 @@ import {
 } from '@/styles/bookStepper.styles';
 import SwitchCases from '../common/SwitchCases';
 import { useStepValidation } from '@/hooks/useStepValidation';
-import BookStatusPeriodValidation from '../evaluation/BookStatusPeriodValidation';
 import { FormProvider, useForm } from 'react-hook-form';
 import StepperNavigation from './StepperNavigation';
 import dynamic from 'next/dynamic';
 import BookDetail from './BookDetail';
+import BookStatusPeriodStep from '../evaluation/BookStatusPeriodValidation';
 
 const BookDetailErrorFallback = dynamic(
   () =>
@@ -41,7 +41,7 @@ export default function BookEvaluationStepper() {
           <SwitchCases
             value={step as string}
             cases={{
-              '1': <BookStatusPeriodValidation />,
+              '1': <BookStatusPeriodStep />,
               '2': <div>평가 폼1 (구현 예정)</div>,
               '3': <div>평가 폼2 (구현 예정)</div>,
               '4': <div>평가 폼3 (구현 예정)</div>,

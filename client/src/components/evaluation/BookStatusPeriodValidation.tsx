@@ -1,7 +1,5 @@
 import { css } from '@emotion/react';
 import { theme } from '@/theme';
-import Datepicker from '../date-picker/Datepicker';
-import { useFormContext } from 'react-hook-form';
 import BookStatusSection from './BookStatusSection';
 import BookPeriodSection from './BookPeriodSection';
 import { BOOK_STATUS_OPTIONS } from '@/constants/book';
@@ -53,13 +51,7 @@ const BookStatusPeriodTitle = ({
   );
 };
 
-export default function BookStatusPeriodValidation() {
-  const {
-    control,
-    watch,
-    formState: { errors, isValid },
-  } = useFormContext<BookStatusFormData>();
-
+export default function BookStatusPeriodStep() {
   return (
     <form
       css={css`
@@ -72,16 +64,10 @@ export default function BookStatusPeriodValidation() {
         margin: ${theme.spacing.lg} 0;
       `}
     >
-      <BookStatusSection
-        control={control}
-        errors={errors}
-      />
-      <BookPeriodSection
-        control={control}
-        errors={errors}
-      />
+      <BookStatusSection />
+      <BookPeriodSection />
     </form>
   );
 }
 
-BookStatusPeriodValidation.Title = BookStatusPeriodTitle;
+BookStatusPeriodStep.Title = BookStatusPeriodTitle;

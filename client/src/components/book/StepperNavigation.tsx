@@ -21,11 +21,7 @@ export default function StepperNavigation() {
     maxStep,
   });
 
-  const {
-    watch,
-    formState: { isValid },
-    handleSubmit,
-  } = useFormContext<BookStatusFormData>();
+  const { handleSubmit } = useFormContext<BookStatusFormData>();
 
   // const watchedStatus = watch('status');
   // const watchedStartDate = watch('startDate') || '';
