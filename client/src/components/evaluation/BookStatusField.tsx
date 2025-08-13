@@ -1,5 +1,5 @@
 import { BOOK_STATUS_OPTIONS } from '@/constants/book';
-import { Controller, FieldErrors, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import Dropdown from '../drop-down/Dropdown';
 import ErrorMessage from '../common/ErrorMessage';
 import BookStatusPeriodStep, {
