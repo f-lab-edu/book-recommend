@@ -12,9 +12,20 @@ type DropdownProps = {
   isError?: boolean;
 };
 
-export default function Dropdown({ options, defaultValue, onChange, isError }: DropdownProps) {
+export default function Dropdown({
+  options,
+  defaultValue,
+  onChange,
+  isError,
+}: DropdownProps) {
   const dropDownRef = useRef<HTMLDivElement>(null);
-  const { isOpen, activeValue, handleDropdownOpen, handleDropdownClose, handleItemSelect } = useDropdown({
+  const {
+    isOpen,
+    activeValue,
+    handleDropdownOpen,
+    handleDropdownClose,
+    handleItemSelect,
+  } = useDropdown({
     defaultValue,
     onChange,
   });
