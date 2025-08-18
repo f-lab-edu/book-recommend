@@ -61,17 +61,7 @@ export default function BookStatusPeriodValidation() {
   } = useFormContext<BookStatusFormData>();
 
   return (
-    <form
-      css={css`
-        display: flex;
-        padding: 16px;
-        background-color: white;
-        border-radius: 16px;
-        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-        width: 100%;
-        margin: ${theme.spacing.lg} 0;
-      `}
-    >
+    <>
       <BookStatusSection
         control={control}
         errors={errors}
@@ -80,7 +70,7 @@ export default function BookStatusPeriodValidation() {
         control={control}
         errors={errors}
       />
-    </form>
+    </>
   );
 }
 
