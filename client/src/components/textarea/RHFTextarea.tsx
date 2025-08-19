@@ -3,6 +3,7 @@ import {
   ControllerRenderProps,
   FieldError,
   FieldValues,
+  RegisterOptions,
   useFormContext,
 } from 'react-hook-form';
 import ErrorMessage from '../common/ErrorMessage';
@@ -12,10 +13,10 @@ import { FieldPath } from 'react-hook-form';
 type RHFTextareaProps<T extends FieldValues> = {
   name: FieldPath<T>;
   disabled?: boolean;
-  rules?: {
-    required?: string | boolean;
-    validate?: (value: string) => string | boolean;
-  };
+  rules?: Omit<
+    RegisterOptions<T, FieldPath<T>>,
+    'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
+  >;
   render?: (
     field: ControllerRenderProps<T, FieldPath<T>>,
   ) => React.ReactElement;
