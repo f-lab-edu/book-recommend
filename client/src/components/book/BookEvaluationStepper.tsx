@@ -1,4 +1,3 @@
-import BookDetail from './BookDetail';
 import BookDetailSkeleton from './BookDetailSkeleton';
 import SuspenseBoundary from '../common/SuspenseBoundary';
 import {
@@ -7,13 +6,24 @@ import {
 } from '@/styles/bookStepper.styles';
 import SwitchCases from '../common/SwitchCases';
 import { useStepValidation } from '@/hooks/useStepValidation';
-import { BookDetailErrorFallback } from '../common/ErrorFallbacks';
 import BookStatusPeriodValidation from '../evaluation/BookStatusPeriodValidation';
 import { FormProvider, useForm } from 'react-hook-form';
 import StepperNavigation from './StepperNavigation';
 import BookRatingReviewStep from '../evaluation/BookRatingReviewStep';
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
+import dynamic from 'next/dynamic';
+import BookDetail from './BookDetail';
+
+const BookDetailErrorFallback = dynamic(
+  () =>
+    import('../common/ErrorFallbacks').then(
+      (mod) => mod.BookDetailErrorFallback,
+    ),
+  {
+    ssr: false,
+  },
+);
 
 export default function BookEvaluationStepper() {
   const { step, isbn } = useStepValidation();
@@ -25,7 +35,7 @@ export default function BookEvaluationStepper() {
       <div css={bookStepperContentStyle}>
         <SuspenseBoundary
           loading={<BookDetailSkeleton />}
-          rejectedFallback={BookDetailErrorFallback}
+          rejectedFallback={(props) => <BookDetailErrorFallback {...props} />}
         >
           <BookDetail isbn={isbn as string} />
         </SuspenseBoundary>
