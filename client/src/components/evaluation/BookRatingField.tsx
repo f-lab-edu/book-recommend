@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import StarRating from '../rating/StarRating';
+import { FORM_FIELDS } from '../../constants/formFields';
 
 const BookRatingField = () => {
   return (
@@ -12,7 +13,7 @@ const BookRatingField = () => {
       `}
     >
       <h2>독서 추천 여부</h2>
-      <StarRating />
+      <StarRating name={FORM_FIELDS.BOOK_EVALUATION.RATING} />
     </div>
   );
 };
