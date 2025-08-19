@@ -1,8 +1,14 @@
 import { useCallback, useState, useRef } from 'react';
 import { Star } from 'lucide-react';
 import { css } from '@emotion/react';
-import { Controller, useFormContext } from 'react-hook-form';
+import {
+  Controller,
+  FieldError,
+  FieldValues,
+  useFormContext,
+} from 'react-hook-form';
 import ErrorMessage from '../common/ErrorMessage';
+import { FieldPath } from 'react-hook-form';
 
 const useStarRatingHandle = () => {
   const [rating, setRating] = useState(0);
@@ -101,7 +107,13 @@ const useStarRatingHandle = () => {
   };
 };
 
-const StarRating = ({ totalStars = 5 }: { totalStars?: number }) => {
+const StarRating = <T extends FieldValues>({
+  totalStars = 5,
+  name,
+}: {
+  totalStars?: number;
+  name: FieldPath<T>;
+}) => {
   const {
     rating,
     hoverRating,
@@ -115,7 +127,10 @@ const StarRating = ({ totalStars = 5 }: { totalStars?: number }) => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<{ rating: number }>();
+  } = useFormContext<T>();
+
+  const errorMessage =
+    (errors as { [name: string]: FieldError })[name]?.message || '';
 
   return (
     <div
@@ -126,7 +141,7 @@ const StarRating = ({ totalStars = 5 }: { totalStars?: number }) => {
       `}
     >
       <Controller
-        name="rating"
+        name={name}
         control={control}
         rules={{ required: '별점을 선택해주세요.' }}
         render={({ field: { onChange } }) => (
@@ -160,7 +175,7 @@ const StarRating = ({ totalStars = 5 }: { totalStars?: number }) => {
           </div>
         )}
       />
-      <ErrorMessage errorMessage={errors.rating?.message || ''} />
+      <ErrorMessage errorMessage={errorMessage} />
     </div>
   );
 };
