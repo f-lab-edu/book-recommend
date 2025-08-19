@@ -1,14 +1,12 @@
-import { useCallback, useState, useRef } from 'react';
-import { Star } from 'lucide-react';
 import { css } from '@emotion/react';
-import {
-  Controller,
-  FieldError,
-  FieldValues,
-  useFormContext,
-} from 'react-hook-form';
-import ErrorMessage from '../common/ErrorMessage';
-import { FieldPath } from 'react-hook-form';
+import { Star } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { useCallback } from 'react';
+import { ControllerRenderProps } from 'react-hook-form';
+
+type StarRatingProps = ControllerRenderProps & {
+  totalStars?: number;
+};
 
 const useStarRatingHandle = () => {
   const [rating, setRating] = useState(0);
@@ -107,13 +105,10 @@ const useStarRatingHandle = () => {
   };
 };
 
-const StarRating = <T extends FieldValues>({
+export default function StarRating({
   totalStars = 5,
-  name,
-}: {
-  totalStars?: number;
-  name: FieldPath<T>;
-}) => {
+  onChange,
+}: StarRatingProps) {
   const {
     rating,
     hoverRating,
@@ -124,60 +119,34 @@ const StarRating = <T extends FieldValues>({
     handleMouseLeave,
   } = useStarRatingHandle();
 
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext<T>();
-
-  const errorMessage =
-    (errors as { [name: string]: FieldError })[name]?.message || '';
-
   return (
     <div
       css={css`
         display: flex;
-        flex-direction: column;
-        gap: 8px;
       `}
     >
-      <Controller
-        name={name}
-        control={control}
-        rules={{ required: '별점을 선택해주세요.' }}
-        render={({ field: { onChange } }) => (
-          <div
-            css={css`
-              display: flex;
-            `}
-          >
-            {[...Array(totalStars)].map((_, index) => {
-              const starValue = index + 1;
+      {[...Array(totalStars)].map((_, index) => {
+        const starValue = index + 1;
 
-              return (
-                <div
-                  key={starValue}
-                  css={css`
-                    cursor: pointer;
-                    margin-right: 4px;
-                    position: relative;
-                  `}
-                  ref={(el) => {
-                    starRefs.current[index] = el;
-                  }}
-                  onClick={() => handleClick(hoverRating || rating, onChange)}
-                  onMouseMove={(e) => handleMouseMove(e, index)}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  {renderStar(index)}
-                </div>
-              );
-            })}
+        return (
+          <div
+            key={starValue}
+            css={css`
+              cursor: pointer;
+              margin-right: 4px;
+              position: relative;
+            `}
+            ref={(el) => {
+              starRefs.current[index] = el;
+            }}
+            onClick={() => handleClick(hoverRating || rating, onChange)}
+            onMouseMove={(e) => handleMouseMove(e, index)}
+            onMouseLeave={handleMouseLeave}
+          >
+            {renderStar(index)}
           </div>
-        )}
-      />
-      <ErrorMessage errorMessage={errorMessage} />
+        );
+      })}
     </div>
   );
-};
-
-export default StarRating;
+}
