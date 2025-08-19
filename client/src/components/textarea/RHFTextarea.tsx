@@ -21,19 +21,13 @@ type RHFTextareaProps<T extends FieldValues> = {
   ) => React.ReactElement;
 };
 
-export default function RHFTextarea<T extends FieldValues>({
-  name,
-  disabled,
-  rules,
-  render,
-  ...props
-}: RHFTextareaProps<T>) {
+const useFormFieldHelpers = <T extends FieldValues>() => {
   const {
     control,
     formState: { errors },
   } = useFormContext<T>();
 
-  const getErrorMessage = () => {
+  const getErrorMessage = (name: FieldPath<T>) => {
     const error = (errors as { [name: string]: FieldError })[name];
 
     if (error?.message) {
@@ -42,6 +36,18 @@ export default function RHFTextarea<T extends FieldValues>({
 
     return '';
   };
+
+  return { control, getErrorMessage };
+};
+
+export default function RHFTextarea<T extends FieldValues>({
+  name,
+  disabled,
+  rules,
+  render,
+  ...props
+}: RHFTextareaProps<T>) {
+  const { control, getErrorMessage } = useFormFieldHelpers<T>();
 
   return (
     <>
@@ -60,7 +66,7 @@ export default function RHFTextarea<T extends FieldValues>({
                 {...props}
                 disabled={disabled}
               />
-              <ErrorMessage errorMessage={getErrorMessage()} />
+              <ErrorMessage errorMessage={getErrorMessage(name)} />
             </>
           );
         }}
