@@ -1,9 +1,8 @@
 import { css } from '@emotion/react';
 import { theme } from '@/theme';
-import Datepicker from '../date-picker/Datepicker';
-import { useFormContext } from 'react-hook-form';
-import BookStatusSection from './BookStatusSection';
-import BookPeriodSection from './BookPeriodSection';
+import BookStatusField from './BookStatusField';
+import BookPeriodField from './BookPeriodField';
+
 import { BOOK_STATUS_OPTIONS } from '@/constants/book';
 
 // STATUS_OPTIONS의 value 값들을 타입으로 추출
@@ -53,25 +52,23 @@ const BookStatusPeriodTitle = ({
   );
 };
 
-export default function BookStatusPeriodValidation() {
-  const {
-    control,
-    watch,
-    formState: { errors, isValid },
-  } = useFormContext<BookStatusFormData>();
-
+export default function BookStatusPeriodStep() {
   return (
-    <>
-      <BookStatusSection
-        control={control}
-        errors={errors}
-      />
-      <BookPeriodSection
-        control={control}
-        errors={errors}
-      />
-    </>
+    <form
+      css={css`
+        display: flex;
+        padding: 16px;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+        width: 100%;
+        margin: ${theme.spacing.lg} 0;
+      `}
+    >
+      <BookStatusField />
+      <BookPeriodField />
+    </form>
   );
 }
 
-BookStatusPeriodValidation.Title = BookStatusPeriodTitle;
+BookStatusPeriodStep.Title = BookStatusPeriodTitle;

@@ -1,6 +1,9 @@
 import { css } from '@emotion/react';
-import BookStatusPeriodValidation, { BookStatus, BookStatusFormData } from './BookStatusPeriodValidation';
-import { Control, Controller, FieldErrors, useFormContext } from 'react-hook-form';
+import BookStatusPeriodStep, {
+  BookStatus,
+  BookStatusFormData,
+} from './BookStatusPeriodStep';
+import { Controller, useFormContext } from 'react-hook-form';
 import ErrorMessage from '../common/ErrorMessage';
 import {
   BOOK_STATUS_COMPLETED,
@@ -8,6 +11,8 @@ import {
   BOOK_STATUS_READING,
   BOOK_STATUS_WANT_TO_READ,
 } from '@/constants/book';
+import RHFDateRangeInput from '../input/RHFDateRangeInput';
+import { bookPeriodRules } from '@/validations/rules/book';
 
 const BOOK_STATUS_NONE = '';
 const PeriodRequirement = {
@@ -33,23 +38,27 @@ const getPeriodRequiredStatus = (status: BookStatus) => {
   }
 };
 
-export default function BookPeriodSection({
-  control,
-  errors,
-}: {
-  control: Control<BookStatusFormData>;
-  errors: FieldErrors<BookStatusFormData>;
-}) {
-  const { watch } = useFormContext<BookStatusFormData>();
+export default function BookPeriodField() {
+  const {
+    watch,
+    formState: { errors },
+  } = useFormContext<BookStatusFormData>();
+
   const watchedStatus = watch('status');
   const requiredPeriod = getPeriodRequiredStatus(watchedStatus);
   const isPeriodRequired = requiredPeriod.some((isRequired) => isRequired);
   const isEndDateRequired = requiredPeriod[1];
 
+  const { startDate, endDate } = bookPeriodRules;
+
   return (
-    <BookStatusPeriodValidation.Title
+    <BookStatusPeriodStep.Title
       title="독서기간"
-      description={isPeriodRequired ? '독서 기간을 선택해주세요.' : '독서 상태를 먼저 선택해주세요.'}
+      description={
+        isPeriodRequired
+          ? '독서 기간을 선택해주세요.'
+          : '독서 상태를 먼저 선택해주세요.'
+      }
     >
       <div
         css={css`
@@ -66,28 +75,16 @@ export default function BookPeriodSection({
           `}
         >
           <span>시작일</span>
-          <Controller
+          <RHFDateRangeInput
             name="startDate"
-            control={control}
+            disabled={!isPeriodRequired}
+            className={`
+              border: ${errors.startDate ? '1px solid red' : 'none'};
+            `}
             rules={{
-              required: isPeriodRequired ? '시작일을 선택해주세요.' : false,
-              validate: (value) => {
-                if (!isPeriodRequired) return true;
-                if (!value) return '시작일을 선택해주세요.';
-                return true;
-              },
+              required: startDate.required(isPeriodRequired),
+              validate: (value) => startDate.validate(value, isPeriodRequired),
             }}
-            render={({ field: { onChange, value } }) => (
-              <input
-                type="date"
-                value={value}
-                onChange={onChange}
-                disabled={!isPeriodRequired}
-                css={css`
-                  border: ${errors.startDate ? '1px solid red' : 'none'};
-                `}
-              />
-            )}
           />
           <ErrorMessage errorMessage={errors.startDate?.message || ''} />
         </div>
@@ -100,35 +97,21 @@ export default function BookPeriodSection({
           `}
         >
           <span>종료일</span>
-          <Controller
+          <RHFDateRangeInput
             name="endDate"
-            control={control}
+            disabled={!isPeriodRequired}
+            className={`
+              border: ${errors.endDate ? '1px solid red' : 'none'};
+            `}
             rules={{
-              required: isEndDateRequired ? '종료일을 선택해주세요.' : false,
-              validate: (value, formValues) => {
-                if (!isEndDateRequired) return true;
-                if (!value) return '종료일을 선택해주세요.';
-                if (formValues.startDate && value < formValues.startDate) {
-                  return '종료일은 시작일보다 늦어야 합니다.';
-                }
-                return true;
-              },
+              required: endDate.required(isEndDateRequired),
+              validate: (value, formValues) =>
+                endDate.validate(value, formValues, isEndDateRequired),
             }}
-            render={({ field: { onChange, value } }) => (
-              <input
-                type="date"
-                value={value}
-                onChange={onChange}
-                disabled={!isPeriodRequired}
-                css={css`
-                  border: ${errors.endDate ? '1px solid red' : 'none'};
-                `}
-              />
-            )}
           />
           <ErrorMessage errorMessage={errors.endDate?.message || ''} />
         </div>
       </div>
-    </BookStatusPeriodValidation.Title>
+    </BookStatusPeriodStep.Title>
   );
 }

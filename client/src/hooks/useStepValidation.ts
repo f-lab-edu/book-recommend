@@ -1,59 +1,51 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 interface ValidationResult {
   isValid: boolean;
   error: string | null;
   isbn: string | null;
-  step: string | null;
+  step: string;
 }
 
 export function useStepValidation(): ValidationResult {
   const router = useRouter();
-  const { isbn, step, isReady } = router.query;
-  const [validationResult, setValidationResult] = useState<ValidationResult>({
+  const { isbn, step } = router.query;
+
+  let validationResult: ValidationResult = {
     isValid: false,
     error: null,
     isbn: null,
-    step: null,
-  });
+    step: '1',
+  };
 
-  useEffect(() => {
-    // 모든 validation 로직을 한 번에 처리
-    let newValidationResult: ValidationResult;
+  const isbnString = isbn as string;
+  const stepString = step as string;
 
-    const isbnString = isbn as string;
-    const stepString = step as string;
+  if (!isbnString || isbnString === '') {
+    validationResult = {
+      ...validationResult,
+      error: 'ISBN 번호가 없습니다.',
+    };
+  } else {
+    const stepNumber = Number(stepString) || 1;
 
-    if (!isbnString || isbnString === "") {
-      newValidationResult = {
-        isValid: false,
-        error: "ISBN 번호가 없습니다.",
-        isbn: null,
-        step: null,
+    if (stepNumber < 1 || stepNumber > 5) {
+      validationResult = {
+        ...validationResult,
+        error: '잘못된 단계입니다.',
+        isbn: isbnString,
+        step: stepString,
       };
     } else {
-      const stepNumber = Number(stepString) || 1;
-
-      if (stepNumber < 1 || stepNumber > 5) {
-        newValidationResult = {
-          isValid: false,
-          error: "잘못된 단계입니다.",
-          isbn: isbnString,
-          step: stepString,
-        };
-      } else {
-        newValidationResult = {
-          isValid: true,
-          error: null,
-          isbn: isbnString,
-          step: stepString || "1",
-        };
-      }
+      validationResult = {
+        isValid: true,
+        error: null,
+        isbn: isbnString,
+        step: stepString || '1',
+      };
     }
-
-    setValidationResult(newValidationResult);
-  }, [isReady, isbn, step]);
+  }
 
   return validationResult;
 }
