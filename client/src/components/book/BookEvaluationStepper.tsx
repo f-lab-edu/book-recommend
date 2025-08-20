@@ -6,11 +6,11 @@ import {
 } from '@/styles/bookStepper.styles';
 import SwitchCases from '../common/SwitchCases';
 import { useStepValidation } from '@/hooks/useStepValidation';
-import BookStatusPeriodValidation from '../evaluation/BookStatusPeriodValidation';
 import { FormProvider, useForm } from 'react-hook-form';
 import StepperNavigation from './StepperNavigation';
 import dynamic from 'next/dynamic';
 import BookDetail from './BookDetail';
+import BookStatusPeriodStep from '../evaluation/BookStatusPeriodStep';
 
 const BookDetailErrorFallback = dynamic(
   () =>
@@ -23,7 +23,11 @@ const BookDetailErrorFallback = dynamic(
 );
 
 export default function BookEvaluationStepper() {
-  const { step, isbn } = useStepValidation();
+  const { step, isbn, error } = useStepValidation();
+
+  if (isbn == null || error != null) {
+    throw new Error(error || '잘못된 접근입니다.');
+  }
 
   const form = useForm();
 
@@ -34,14 +38,14 @@ export default function BookEvaluationStepper() {
           loading={<BookDetailSkeleton />}
           rejectedFallback={(props) => <BookDetailErrorFallback {...props} />}
         >
-          <BookDetail isbn={isbn as string} />
+          <BookDetail isbn={isbn} />
         </SuspenseBoundary>
 
         <FormProvider {...form}>
           <SwitchCases
-            value={step as string}
+            value={step}
             cases={{
-              '1': <BookStatusPeriodValidation />,
+              '1': <BookStatusPeriodStep />,
               '2': <div>평가 폼1 (구현 예정)</div>,
               '3': <div>평가 폼2 (구현 예정)</div>,
               '4': <div>평가 폼3 (구현 예정)</div>,

@@ -24,10 +24,6 @@ import { useBookDetail } from '@/hooks/useBooks';
 import React from 'react';
 
 export default React.memo(function BookDetail({ isbn }: { isbn: string }) {
-  if (isbn == null) {
-    return null;
-  }
-
   const { data: book } = useSuspenseQuery(useBookDetail(deConcatIsbn(isbn)));
 
   if (book == null) {
@@ -64,11 +60,7 @@ export default React.memo(function BookDetail({ isbn }: { isbn: string }) {
       <div css={footerStyle}>
         <div css={priceStyle}>
           <span css={priceTextStyle}>₩{book.price.toLocaleString()}</span>
-          {book.sale_price !== book.price && (
-            <span css={salePriceStyle}>
-              ₩{book.sale_price.toLocaleString()}
-            </span>
-          )}
+          {book.sale_price !== book.price && <span css={salePriceStyle}>₩{book.sale_price.toLocaleString()}</span>}
         </div>
         <p css={isbnStyle}>ISBN: {book.isbn}</p>
       </div>

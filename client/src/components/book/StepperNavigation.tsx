@@ -5,7 +5,7 @@ import { SubmitHandler, useFormContext } from 'react-hook-form';
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
 import { getNextButtonDisabled } from '@/utils/validates';
-import { BookStatusFormData } from '../evaluation/BookStatusPeriodValidation';
+import { BookStatusFormData } from '../evaluation/BookStatusPeriodStep';
 
 export default function StepperNavigation() {
   const router = useRouter();
@@ -21,11 +21,7 @@ export default function StepperNavigation() {
     maxStep,
   });
 
-  const {
-    watch,
-    formState: { isValid },
-    handleSubmit,
-  } = useFormContext<BookStatusFormData>();
+  const { handleSubmit } = useFormContext<BookStatusFormData>();
 
   // const watchedStatus = watch('status');
   // const watchedStartDate = watch('startDate') || '';

@@ -1,18 +1,19 @@
 import { BOOK_STATUS_OPTIONS } from '@/constants/book';
-import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import Dropdown from '../drop-down/Dropdown';
 import ErrorMessage from '../common/ErrorMessage';
-import BookStatusPeriodValidation, { BookStatusFormData } from './BookStatusPeriodValidation';
+import BookStatusPeriodStep, {
+  BookStatusFormData,
+} from './BookStatusPeriodStep';
 
-export default function BookStatusSection({
-  control,
-  errors,
-}: {
-  control: Control<BookStatusFormData>;
-  errors: FieldErrors<BookStatusFormData>;
-}) {
+export default function BookStatusField() {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<BookStatusFormData>();
+
   return (
-    <BookStatusPeriodValidation.Title
+    <BookStatusPeriodStep.Title
       title="독서 상태"
       description="독서 상태를 선택해주세요."
     >
@@ -30,6 +31,6 @@ export default function BookStatusSection({
         )}
       />
       <ErrorMessage errorMessage={errors.status?.message || ''} />
-    </BookStatusPeriodValidation.Title>
+    </BookStatusPeriodStep.Title>
   );
 }
