@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import RHFRating from '../rating/RHFRating';
 import { FORM_FIELDS } from '../../constants/formFields';
 
-const BookRatingField = () => {
+const BookRatingSection = () => {
   return (
     <div
       css={css`
@@ -21,4 +21,4 @@ const BookRatingField = () => {
   );
 };
 
-export default BookRatingField;
+export default BookRatingSection;

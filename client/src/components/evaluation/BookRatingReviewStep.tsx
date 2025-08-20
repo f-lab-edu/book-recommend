@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import BookRatingField from './BookRatingField';
-import BookReviewField from './BookReviewField';
+import BookRatingSection from './BookRatingSection';
+import BookReviewSection from './BookReviewSection';
 
 const BookRatingReviewStep = () => {
   return (
@@ -11,8 +11,8 @@ const BookRatingReviewStep = () => {
         width: 100%;
       `}
     >
-      <BookRatingField />
-      <BookReviewField />
+      <BookRatingSection />
+      <BookReviewSection />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import RHFTextarea from '../textarea/RHFTextarea';
 import { useEffect } from 'react';
 import { FORM_FIELDS } from '../../constants/formFields';
 
-const BookReviewField = () => {
+const BookReviewSection = () => {
   const { watch, trigger } = useFormContext();
   const rating = Number(watch(FORM_FIELDS.BOOK_EVALUATION.RATING));
   const shouldWriteReview = rating <= 1 || rating >= 5;
@@ -41,4 +41,4 @@ const BookReviewField = () => {
   );
 };
 
-export default BookReviewField;
+export default BookReviewSection;
