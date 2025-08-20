@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
-import { getNextButtonDisabled } from '@/utils/validates';
 import { BookStatusFormData } from '../evaluation/BookStatusPeriodStep';
 
 export default function StepperNavigation() {
@@ -23,10 +22,6 @@ export default function StepperNavigation() {
 
   const { handleSubmit } = useFormContext<BookStatusFormData>();
 
-  // const watchedStatus = watch('status');
-  // const watchedStartDate = watch('startDate') || '';
-  // const watchedEndDate = watch('endDate') || '';
-
   const isPreviousButtonDisabled = (step as string) === minStep.toString();
 
   const onSubmit: SubmitHandler<BookStatusFormData> = (data) => {
@@ -37,7 +32,7 @@ export default function StepperNavigation() {
     <div css={bookStepperButtonWrapperStyle}>
       <button
         css={css`
-          background-color: ${theme.colors.background};
+          background-color: ${theme.colors.secondary};
           color: ${theme.colors.background};
           border: none;
           border-radius: ${theme.borderRadius.md};
@@ -45,10 +40,6 @@ export default function StepperNavigation() {
           cursor: pointer;
           font-size: ${theme.fontSize.sm};
           transition: all 0.3s ease;
-          &:disabled {
-            background-color: ${theme.colors.secondary};
-            cursor: not-allowed;
-          }
         `}
         onClick={handlePrevious}
         disabled={isPreviousButtonDisabled}
