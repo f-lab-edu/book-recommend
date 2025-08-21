@@ -9,3 +9,13 @@ export const BOOK_STATUS_OPTIONS = [
   { label: '읽음', value: BOOK_STATUS_COMPLETED },
   { label: '보류 중', value: BOOK_STATUS_ON_HOLD },
 ] as const;
+
+export const BOOK_STATUS_NONE = '';
+
+export const PERIOD_REQUIREMENT = {
+  [BOOK_STATUS_COMPLETED]: [true, true],
+  [BOOK_STATUS_WANT_TO_READ]: [false, false],
+  [BOOK_STATUS_READING]: [true, false],
+  [BOOK_STATUS_ON_HOLD]: [true, false],
+  [BOOK_STATUS_NONE]: [false, false],
+} as const;
