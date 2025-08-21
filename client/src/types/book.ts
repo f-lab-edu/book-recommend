@@ -5,7 +5,7 @@ export type BookApiResponse = {
     pageable_count: number;
     total_count: number;
   };
-}
+};
 
 export type Book = {
   title: string;
@@ -20,4 +20,11 @@ export type Book = {
   status: string;
   thumbnail: string;
   url: string;
-}
+};
+
+export type BookQuote = {
+  quotes: {
+    pageNum: number;
+    quote: string;
+  }[];
+};
