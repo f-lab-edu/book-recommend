@@ -35,18 +35,28 @@ export default function StepperNavigation() {
           background-color: ${theme.colors.secondary};
           color: ${theme.colors.background};
           border: none;
-          border-radius: ${theme.borderRadius.md};
+          border-radius: ${theme.borderRadius.sm};
           padding: ${theme.spacing.sm} ${theme.spacing.md};
           cursor: pointer;
           font-size: ${theme.fontSize.sm};
-          transition: all 0.3s ease;
         `}
         onClick={handlePrevious}
         disabled={isPreviousButtonDisabled}
       >
         이전
       </button>
-      <button onClick={handleSubmit(onSubmit)}>다음</button>
+      <button
+        css={css`
+          border: 1px solid ${theme.colors.secondary};
+          border-radius: ${theme.borderRadius.sm};
+          padding: ${theme.spacing.sm} ${theme.spacing.md};
+          cursor: pointer;
+          font-size: ${theme.fontSize.sm};
+        `}
+        onClick={handleSubmit(onSubmit)}
+      >
+        다음
+      </button>
     </div>
   );
 }

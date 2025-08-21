@@ -13,6 +13,10 @@ export const theme = {
     lg: '20px',
     xl: '24px',
   },
+  fontWeight: {
+    normal: 400,
+    bold: 700,
+  },
   spacing: {
     xs: '4px',
     sm: '8px',
