@@ -14,6 +14,15 @@ import { css } from '@emotion/react';
 import dynamic from 'next/dynamic';
 import BookDetail from './BookDetail';
 import BookStatusPeriodStep from '../evaluation/BookStatusPeriodStep';
+import BookQuoteStep from '../evaluation/BookQuoteStep';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  bookEvaluationSchema,
+  bookPublishSchema,
+  bookQuoteSchema,
+  bookRatingReviewSchema,
+  bookStatusPeriodSchema,
+} from '@/schema/bookEvaluation';
 
 const BookDetailErrorFallback = dynamic(
   () =>
@@ -32,7 +41,35 @@ export default function BookEvaluationStepper() {
     throw new Error(error || '잘못된 접근입니다.');
   }
 
-  const form = useForm();
+  const getSchemaForStep = (currentStep: string) => {
+    switch (currentStep) {
+      case '1':
+        return bookStatusPeriodSchema;
+      case '2':
+      case '3':
+        return bookRatingReviewSchema;
+      case '4':
+        return bookQuoteSchema;
+      case '5':
+        return bookPublishSchema;
+      default:
+        return bookEvaluationSchema; // 전체 스키마
+    }
+  };
+
+  const form = useForm({
+    resolver: zodResolver(getSchemaForStep(step)),
+    mode: 'onChange',
+    defaultValues: {
+      status: undefined,
+      startDate: undefined,
+      endDate: undefined,
+      rating: 0,
+      review: '',
+      quotes: [],
+      publish: false,
+    },
+  });
 
   return (
     <div css={bookStepperContainerStyle}>
@@ -62,7 +99,7 @@ export default function BookEvaluationStepper() {
                 '1': <BookStatusPeriodStep />,
                 '2': <BookRatingReviewStep />,
                 '3': <div>평가 폼2 (구현 예정)</div>,
-                '4': <div>평가 폼3 (구현 예정)</div>,
+                '4': <BookQuoteStep isbn={isbn as string} />,
                 '5': <div>평가 폼4 (구현 예정)</div>,
               }}
               fallback={<div>잘못된 단계입니다.</div>}
