@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
-import { BookStatusFormData } from '../evaluation/BookStatusPeriodStep';
+import { BookEvaluation } from '@/schema/bookEvaluation';
 
 export default function StepperNavigation() {
   const router = useRouter();
@@ -20,11 +20,11 @@ export default function StepperNavigation() {
     maxStep,
   });
 
-  const { handleSubmit } = useFormContext<BookStatusFormData>();
+  const { handleSubmit } = useFormContext<BookEvaluation>();
 
   const isPreviousButtonDisabled = (step as string) === minStep.toString();
 
-  const onSubmit: SubmitHandler<BookStatusFormData> = (data) => {
+  const onSubmit: SubmitHandler<BookEvaluation> = (data) => {
     goNext();
   };
 
