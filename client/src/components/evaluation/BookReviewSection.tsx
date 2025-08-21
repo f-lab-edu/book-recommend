@@ -1,12 +1,10 @@
 import { css } from '@emotion/react';
 import { useFormContext } from 'react-hook-form';
 import RHFTextarea from '../textarea/RHFTextarea';
-import { useEffect } from 'react';
-import { FORM_FIELDS } from '../../constants/formFields';
 
 const BookReviewSection = () => {
-  const { watch, trigger } = useFormContext();
-  const rating = Number(watch(FORM_FIELDS.BOOK_EVALUATION.RATING));
+  const { watch } = useFormContext();
+  const rating = Number(watch('rating'));
   const shouldWriteReview = rating <= 1 || rating >= 5;
 
   return (

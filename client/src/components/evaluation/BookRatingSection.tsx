@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import RHFRating from '../rating/RHFRating';
-import { FORM_FIELDS } from '../../constants/formFields';
 
 const BookRatingSection = () => {
   return (
