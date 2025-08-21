@@ -3,38 +3,31 @@ import BookStatusPeriodStep, {
   BookStatus,
   BookStatusFormData,
 } from './BookStatusPeriodStep';
-import { Controller, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import ErrorMessage from '../common/ErrorMessage';
 import {
   BOOK_STATUS_COMPLETED,
   BOOK_STATUS_ON_HOLD,
   BOOK_STATUS_READING,
   BOOK_STATUS_WANT_TO_READ,
+  PERIOD_REQUIREMENT,
+  BOOK_STATUS_NONE,
 } from '@/constants/book';
 import RHFDateRangeInput from '../input/RHFDateRangeInput';
 import { bookPeriodRules } from '@/validations/rules/book';
-
-const BOOK_STATUS_NONE = '';
-const PeriodRequirement = {
-  [BOOK_STATUS_COMPLETED]: [true, true],
-  [BOOK_STATUS_WANT_TO_READ]: [false, false],
-  [BOOK_STATUS_READING]: [true, false],
-  [BOOK_STATUS_ON_HOLD]: [true, false],
-  [BOOK_STATUS_NONE]: [false, false],
-} as const;
 
 // 독서 상태에 따른 기간 필수 여부 정의
 const getPeriodRequiredStatus = (status: BookStatus) => {
   switch (status) {
     case BOOK_STATUS_COMPLETED:
-      return PeriodRequirement[BOOK_STATUS_COMPLETED];
+      return PERIOD_REQUIREMENT[BOOK_STATUS_COMPLETED];
     case BOOK_STATUS_WANT_TO_READ:
-      return PeriodRequirement[BOOK_STATUS_WANT_TO_READ];
+      return PERIOD_REQUIREMENT[BOOK_STATUS_WANT_TO_READ];
     case BOOK_STATUS_READING:
     case BOOK_STATUS_ON_HOLD:
-      return PeriodRequirement[BOOK_STATUS_READING];
+      return PERIOD_REQUIREMENT[BOOK_STATUS_READING];
     default:
-      return PeriodRequirement[BOOK_STATUS_NONE];
+      return PERIOD_REQUIREMENT[BOOK_STATUS_NONE];
   }
 };
 
@@ -81,10 +74,6 @@ export default function BookPeriodField() {
             className={`
               border: ${errors.startDate ? '1px solid red' : 'none'};
             `}
-            rules={{
-              required: startDate.required(isPeriodRequired),
-              validate: (value) => startDate.validate(value, isPeriodRequired),
-            }}
           />
           <ErrorMessage errorMessage={errors.startDate?.message || ''} />
         </div>
@@ -103,11 +92,6 @@ export default function BookPeriodField() {
             className={`
               border: ${errors.endDate ? '1px solid red' : 'none'};
             `}
-            rules={{
-              required: endDate.required(isEndDateRequired),
-              validate: (value, formValues) =>
-                endDate.validate(value, formValues, isEndDateRequired),
-            }}
           />
           <ErrorMessage errorMessage={errors.endDate?.message || ''} />
         </div>
