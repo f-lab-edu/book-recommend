@@ -13,10 +13,7 @@ const BookRatingSection = () => {
       `}
     >
       <h2>독서 추천 여부</h2>
-      <RHFRating
-        name={FORM_FIELDS.BOOK_EVALUATION.RATING}
-        rules={{ required: '별점을 선택해주세요.' }}
-      />
+      <RHFRating name={'rating'} />
     </div>
   );
 };
