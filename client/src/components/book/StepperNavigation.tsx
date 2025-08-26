@@ -22,8 +22,6 @@ export default function StepperNavigation() {
 
   const { handleSubmit } = useFormContext<BookEvaluation>();
 
-  const isPreviousButtonDisabled = (step as string) === minStep.toString();
-
   const onSubmit: SubmitHandler<BookEvaluation> = (data) => {
     goNext();
   };
@@ -41,7 +39,6 @@ export default function StepperNavigation() {
           font-size: ${theme.fontSize.sm};
         `}
         onClick={handlePrevious}
-        disabled={isPreviousButtonDisabled}
       >
         이전
       </button>
