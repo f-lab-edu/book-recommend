@@ -1,5 +1,3 @@
-import BookDetailSkeleton from './BookDetailSkeleton';
-import SuspenseBoundary from '../common/SuspenseBoundary';
 import {
   bookStepperContainerStyle,
   bookStepperContentStyle,
@@ -11,7 +9,6 @@ import StepperNavigation from './StepperNavigation';
 import BookRatingReviewStep from '../evaluation/BookRatingReviewStep';
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
-import dynamic from 'next/dynamic';
 import BookDetail from './BookDetail';
 import BookStatusPeriodStep from '../evaluation/BookStatusPeriodStep';
 import BookQuoteStep from '../evaluation/BookQuoteStep';
@@ -23,16 +20,7 @@ import {
   bookRatingReviewSchema,
   bookStatusPeriodSchema,
 } from '@/schema/bookEvaluation';
-
-const BookDetailErrorFallback = dynamic(
-  () =>
-    import('../common/ErrorFallbacks').then(
-      (mod) => mod.BookDetailErrorFallback,
-    ),
-  {
-    ssr: false,
-  },
-);
+import { useMemo } from 'react';
 
 export default function BookEvaluationStepper() {
   const { step, isbn, error } = useStepValidation();
@@ -57,10 +45,12 @@ export default function BookEvaluationStepper() {
     }
   };
 
-  const form = useForm({
-    resolver: zodResolver(getSchemaForStep(step)),
-    mode: 'onChange',
-    defaultValues: {
+  const resolver = useMemo(() => {
+    return zodResolver(getSchemaForStep(step));
+  }, [step]);
+
+  const defaultValues = useMemo(() => {
+    return {
       status: undefined,
       startDate: undefined,
       endDate: undefined,
@@ -68,18 +58,18 @@ export default function BookEvaluationStepper() {
       review: '',
       quotes: [],
       publish: false,
-    },
+    };
+  }, []);
+
+  const form = useForm({
+    resolver,
+    defaultValues,
   });
 
   return (
     <div css={bookStepperContainerStyle}>
       <div css={bookStepperContentStyle}>
-        <SuspenseBoundary
-          loading={<BookDetailSkeleton />}
-          rejectedFallback={(props) => <BookDetailErrorFallback {...props} />}
-        >
-          <BookDetail isbn={isbn} />
-        </SuspenseBoundary>
+        <BookDetail isbn={isbn} />
 
         <FormProvider {...form}>
           <div
