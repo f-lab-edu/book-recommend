@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { useFormContext } from 'react-hook-form';
 import RHFTextarea from '../textarea/RHFTextarea';
 
-const BookReviewSection = () => {
+const BookReviewStep = () => {
   const { watch } = useFormContext();
   const rating = Number(watch('rating'));
   const shouldWriteReview = rating <= 1 || rating >= 5;
@@ -25,4 +25,4 @@ const BookReviewSection = () => {
   );
 };
 
-export default BookReviewSection;
+export default BookReviewStep;

@@ -1,12 +1,11 @@
 import { css } from '@emotion/react';
 import RHFRating from '../rating/RHFRating';
 
-const BookRatingSection = () => {
+const BookRatingStep = () => {
   return (
     <div
       css={css`
         display: flex;
-        flex-basis: 30%;
         flex-direction: column;
         gap: 8px;
       `}
@@ -17,4 +16,4 @@ const BookRatingSection = () => {
   );
 };
 
-export default BookRatingSection;
+export default BookRatingStep;

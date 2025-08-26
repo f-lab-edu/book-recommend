@@ -43,11 +43,15 @@ export const bookStatusPeriodSchema = z
     }
   });
 
-export const bookRatingReviewSchema = z
+export const bookRatingSchema = z.object({
+  rating: z.number().min(0.5, {
+    message: '도서 평점을 선택해주세요',
+  }),
+});
+
+export const bookReviewSchema = z
   .object({
-    rating: z.number().min(0.5, {
-      message: '도서 평점을 선택해주세요',
-    }),
+    rating: bookRatingSchema.shape.rating,
     review: z.string().optional(),
   })
   .superRefine((data, ctx) => {
@@ -69,12 +73,19 @@ export const bookRatingReviewSchema = z
   });
 
 export const bookQuoteSchema = z.object({
-  quotes: z.array(
-    z.object({
-      pageNum: z.number(),
-      quote: z.string(),
+  quotes: z
+    .array(
+      z.object({
+        pageNum: z.any().optional(),
+        quote: z.any().optional(),
+        _source: z.any().optional(),
+      }),
+    )
+    .superRefine((data, ctx) => {
+      data.forEach((item, index) => {
+        console.log('item: ', item, ', index: ', index);
+      });
     }),
-  ),
 });
 
 export const bookPublishSchema = z.object({
@@ -82,7 +93,7 @@ export const bookPublishSchema = z.object({
 });
 
 export const bookEvaluationSchema = bookStatusPeriodSchema
-  .extend(bookRatingReviewSchema.shape)
+  .extend(bookReviewSchema.shape)
   .extend(bookQuoteSchema.shape)
   .extend(bookPublishSchema.shape);
 
