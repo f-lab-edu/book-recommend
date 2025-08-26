@@ -6,7 +6,6 @@ import SwitchCases from '../common/SwitchCases';
 import { useStepValidation } from '@/hooks/useStepValidation';
 import { FormProvider, useForm } from 'react-hook-form';
 import StepperNavigation from './StepperNavigation';
-import BookRatingReviewStep from '../evaluation/BookRatingReviewStep';
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
 import BookDetail from './BookDetail';
@@ -17,10 +16,13 @@ import {
   bookEvaluationSchema,
   bookPublishSchema,
   bookQuoteSchema,
-  bookRatingReviewSchema,
+  bookRatingSchema,
+  bookReviewSchema,
   bookStatusPeriodSchema,
 } from '@/schema/bookEvaluation';
 import { useMemo } from 'react';
+import BookRatingStep from '../evaluation/BookRatingStep';
+import BookReviewStep from '../evaluation/BookReviewStep';
 
 export default function BookEvaluationStepper() {
   const { step, isbn, error } = useStepValidation();
@@ -34,8 +36,9 @@ export default function BookEvaluationStepper() {
       case '1':
         return bookStatusPeriodSchema;
       case '2':
+        return bookRatingSchema;
       case '3':
-        return bookRatingReviewSchema;
+        return bookReviewSchema;
       case '4':
         return bookQuoteSchema;
       case '5':
@@ -87,8 +90,8 @@ export default function BookEvaluationStepper() {
               value={step}
               cases={{
                 '1': <BookStatusPeriodStep />,
-                '2': <BookRatingReviewStep />,
-                '3': <div>평가 폼2 (구현 예정)</div>,
+                '2': <BookRatingStep />,
+                '3': <BookReviewStep />,
                 '4': <BookQuoteStep isbn={isbn as string} />,
                 '5': <div>평가 폼4 (구현 예정)</div>,
               }}
