@@ -18,6 +18,7 @@ export default function QuoteActionButtons({
       `}
     >
       <button
+        type="button"
         css={css`
           display: flex;
           width: 50%;
@@ -35,6 +36,7 @@ export default function QuoteActionButtons({
         초기화
       </button>
       <button
+        type="button"
         css={css`
           display: flex;
           width: 50%;
@@ -48,7 +50,6 @@ export default function QuoteActionButtons({
           cursor: pointer;
           font-size: 14px;
         `}
-        disabled={isSubmitting}
         onClick={handleAddQuote}
       >
         작성

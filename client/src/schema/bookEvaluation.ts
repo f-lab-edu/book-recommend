@@ -72,21 +72,92 @@ export const bookReviewSchema = z
     }
   });
 
-export const bookQuoteSchema = z.object({
-  quotes: z
-    .array(
-      z.object({
-        pageNum: z.any().optional(),
-        quote: z.any().optional(),
-        _source: z.any().optional(),
-      }),
-    )
+// export const commaSeparatedNumbersSchema = z.string().transform((val) => {
+//   const _trimmedComma = val.replace(/,/g, '');
+//   if (isNaN(Number(_trimmedComma))) {
+//     return '';
+//   }
+//   return Number(_trimmedComma).toLocaleString();
+// });
+
+export const commaSeparatedNumbersSchema = (name: string) =>
+  z
+    .string()
     .superRefine((data, ctx) => {
-      data.forEach((item, index) => {
-        console.log('item: ', item, ', index: ', index);
-      });
-    }),
-});
+      console.log('data: ', data);
+
+      if (data === '' || data === '0') {
+        ctx.addIssue({
+          code: 'custom',
+          message: '인용구 페이지를 입력해주세요.',
+          path: [name],
+        });
+      }
+
+      const _trimmedComma = data.replace(/,/g, '');
+      if (isNaN(Number(_trimmedComma))) {
+        ctx.addIssue({
+          code: 'custom',
+          message: '숫자만 입력해주세요.',
+          path: [name],
+        });
+      }
+    })
+    .transform((val) => {
+      const _trimmedComma = val.replace(/,/g, '');
+      if (isNaN(Number(_trimmedComma))) {
+        return '';
+      }
+      return Number(_trimmedComma).toLocaleString();
+    });
+
+export const bookQuoteSchema = (name: string) =>
+  z.object({
+    quotes: z
+      .array(
+        z.object({
+          pageNum: commaSeparatedNumbersSchema(name).optional(),
+          quote: z.string().optional(),
+        }),
+      )
+      .superRefine((data, ctx) => {
+        if (data.length > 1) {
+          let quoteIndex = 0;
+          const isPageNumEmpty = data.some((item, index) => {
+            if (item.pageNum === '' || item.pageNum === '0') {
+              quoteIndex = index;
+              return true;
+            }
+            return false;
+          });
+          if (isPageNumEmpty) {
+            ctx.addIssue({
+              code: 'custom',
+              message: '인용구 페이지를 입력해주세요.',
+              path: [quoteIndex, 'pageNum'],
+            });
+          }
+          const isQuoteEmpty = data.some((item, index) => {
+            if (
+              item.pageNum &&
+              (item.quote === '' || item.quote?.trim() === '')
+            ) {
+              quoteIndex = index;
+              return true;
+            }
+            return false;
+          });
+          if (isQuoteEmpty) {
+            ctx.addIssue({
+              code: 'custom',
+              message: '인용구를 입력해주세요.',
+              path: [quoteIndex, 'quote'],
+            });
+          }
+          return;
+        }
+      }),
+  });
 
 export const bookPublishSchema = z.object({
   publish: z.boolean(),
@@ -94,7 +165,7 @@ export const bookPublishSchema = z.object({
 
 export const bookEvaluationSchema = bookStatusPeriodSchema
   .extend(bookReviewSchema.shape)
-  .extend(bookQuoteSchema.shape)
+  .extend(bookQuoteSchema('quotes').shape)
   .extend(bookPublishSchema.shape);
 
 export type BookEvaluation = z.infer<typeof bookEvaluationSchema>;

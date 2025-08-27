@@ -13,7 +13,7 @@ type RHFDateRangeInputProps = {
   name: string;
   disabled: boolean;
   className: string;
-  rules: RegisterOptions;
+  rules?: RegisterOptions;
   render?: ({
     field,
     fieldState,

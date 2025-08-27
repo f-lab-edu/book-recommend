@@ -23,6 +23,7 @@ import {
 import { useMemo } from 'react';
 import BookRatingStep from '../evaluation/BookRatingStep';
 import BookReviewStep from '../evaluation/BookReviewStep';
+import BookPublishStep from '../evaluation/BookPublishStep';
 
 export default function BookEvaluationStepper() {
   const { step, isbn, error } = useStepValidation();
@@ -40,7 +41,7 @@ export default function BookEvaluationStepper() {
       case '3':
         return bookReviewSchema;
       case '4':
-        return bookQuoteSchema;
+        return bookQuoteSchema('quotes');
       case '5':
         return bookPublishSchema;
       default:
@@ -93,7 +94,7 @@ export default function BookEvaluationStepper() {
                 '2': <BookRatingStep />,
                 '3': <BookReviewStep />,
                 '4': <BookQuoteStep isbn={isbn as string} />,
-                '5': <div>평가 폼4 (구현 예정)</div>,
+                '5': <BookPublishStep />,
               }}
               fallback={<div>잘못된 단계입니다.</div>}
             />

@@ -1,13 +1,19 @@
 import { css } from '@emotion/react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useBookDetail } from '@/hooks/useBooks';
 import { deConcatIsbn } from '@/utils/utils';
 import QuoteList from '../quote/QuoteList';
 import QuoteInputSection from '../quote/QuoteInputSection';
-import { BookQuote } from '@/types/book';
 import QuoteActionButtons from '../quote/QuoteActionButtons';
 import { theme } from '@/theme';
+import {
+  BookEvaluation,
+  bookQuoteSchema,
+  commaSeparatedNumbersSchema,
+} from '@/schema/bookEvaluation';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Book } from '@/types/book';
 
 const useQuoteManagement = (isbn: string) => {
   const {
@@ -15,15 +21,17 @@ const useQuoteManagement = (isbn: string) => {
     formState: { errors, isSubmitting },
     getValues,
     setValue,
-  } = useFormContext<BookQuote>();
+    setError,
+  } = useFormContext<BookEvaluation>();
 
-  const queryClient = useQueryClient();
-  const data = queryClient.getQueryData(
-    useBookDetail(deConcatIsbn(isbn)).queryKey,
-  );
+  const { data } = useQuery(useBookDetail(deConcatIsbn(isbn)));
+
+  if (data == undefined) {
+    throw new Error('책 정보를 찾을 수 없습니다.');
+  }
 
   const totalPageNum =
-    (data as { pageNum: number })?.pageNum ||
+    (data as Book & { pageNum: number })?.pageNum ||
     Math.floor(Math.random() * 301) + 100;
 
   const { fields, append, remove } = useFieldArray({
@@ -32,32 +40,48 @@ const useQuoteManagement = (isbn: string) => {
   });
 
   const count = fields.length;
-  const errorMessage = errors.quotes?.[count]?.pageNum?.message || '';
+  const errorMessage = errors.quotes?.[count]?.quote?.message || '';
 
-  const handleAddQuote = () => {
+  const handleAddQuote = (onSuccess?: () => void) => {
     if (isSubmitting) return;
 
-    const pageNum = getValues(`quotes.${count}.pageNum`) || 0;
+    const count = fields.length;
+
+    const pageNum = getValues(`quotes.${count}.pageNum`) || '0';
     const quote = getValues(`quotes.${count}.quote`) || '';
+    const quoteSchema = bookQuoteSchema(`quotes.${count}.pageNum`);
 
-    if (quote === '') return;
+    if (fields.length > 1) {
+      if (pageNum === '0') {
+        try {
+          quoteSchema.parse({ pageNum, quote });
+        } catch (error) {
+          setValue(`quotes.${count}.pageNum`, '', { shouldValidate: true });
+        }
+      }
+      return;
+    }
 
-    append({
-      pageNum,
-      quote,
-    });
+    if (quote === '') {
+      setError(`quotes.${count}.quote`, {
+        message: '인용구를 입력해주세요.',
+      });
+      return;
+    }
 
+    append({ pageNum, quote });
+    onSuccess?.();
     handleReset();
   };
 
-  const handleReset = () => {
-    setValue(`quotes.${count}.pageNum`, null);
+  const handleReset = useCallback(() => {
+    setValue(`quotes.${count}.pageNum`, '');
     setValue(`quotes.${count}.quote`, '');
-  };
+  }, []);
 
-  const handleRemoveQuote = (index: number) => {
+  const handleRemoveQuote = useCallback((index: number) => {
     remove(index);
-  };
+  }, []);
 
   return {
     formState: { errors, isSubmitting },
@@ -70,27 +94,65 @@ const useQuoteManagement = (isbn: string) => {
   };
 };
 
+const useQuoteStateHandle = () => {
+  const [isAddQuote, setIsAddQuote] = useState(false);
+
+  const handleOpenQuote = () => {
+    setIsAddQuote(true);
+  };
+
+  const handleCloseQuote = () => {
+    setIsAddQuote(false);
+  };
+
+  return { isAddQuote, handleOpenQuote, handleCloseQuote };
+};
+
 export default function BookQuoteStep({ isbn }: { isbn: string }) {
   const {
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
     fields,
     count,
-    errorMessage,
     handleAddQuote,
     handleRemoveQuote,
     handleReset,
   } = useQuoteManagement(isbn);
 
-  console.log('BookQuoteStep 실행: ', fields);
+  const { isAddQuote, handleOpenQuote, handleCloseQuote } =
+    useQuoteStateHandle();
 
   return (
     <BookQuoteStep.Title title="인용구">
-      <QuoteInputSection quoteIndex={count} />
-      <QuoteActionButtons
-        handleReset={handleReset}
-        handleAddQuote={handleAddQuote}
-        isSubmitting={isSubmitting}
-      />
+      {isAddQuote ? (
+        <>
+          <QuoteInputSection
+            quoteIndex={count}
+            totalQuotes={fields.length}
+          />
+          <QuoteActionButtons
+            handleAddQuote={() => handleAddQuote(handleCloseQuote)}
+            handleReset={handleReset}
+            isSubmitting={isSubmitting}
+          />
+        </>
+      ) : (
+        <button
+          css={css`
+            background-color: ${theme.colors.primary};
+            color: ${theme.colors.background};
+            border: none;
+            border-radius: ${theme.borderRadius.sm};
+            padding: ${theme.spacing.sm} ${theme.spacing.md};
+            cursor: pointer;
+            font-size: ${theme.fontSize.sm};
+            font-weight: ${theme.fontWeight.bold};
+            margin-top: ${theme.spacing.md};
+          `}
+          onClick={handleOpenQuote}
+        >
+          인용구 추가
+        </button>
+      )}
       <QuoteList
         quotes={fields}
         handleRemoveQuote={handleRemoveQuote}

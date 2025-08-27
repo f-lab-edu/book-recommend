@@ -11,7 +11,7 @@ const BookReviewStep = () => {
     <div
       css={css`
         display: flex;
-        flex-basis: 70%;
+        width: 100%;
         flex-direction: column;
         gap: 8px;
       `}
