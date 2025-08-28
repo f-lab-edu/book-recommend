@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import { css } from '@emotion/react';
 
 export const bookStepperContainerStyle = css`
   display: flex;
@@ -20,5 +20,4 @@ export const bookStepperButtonWrapperStyle = css`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 20px;
 `;

@@ -2,15 +2,14 @@ import { BOOK_STATUS_OPTIONS } from '@/constants/book';
 import { Controller, useFormContext } from 'react-hook-form';
 import Dropdown from '../drop-down/Dropdown';
 import ErrorMessage from '../common/ErrorMessage';
-import BookStatusPeriodStep, {
-  BookStatusFormData,
-} from './BookStatusPeriodStep';
+import BookStatusPeriodStep from './BookStatusPeriodStep';
+import { BookEvaluation } from '@/schema/bookEvaluation';
 
 export default function BookStatusField() {
   const {
     control,
     formState: { errors },
-  } = useFormContext<BookStatusFormData>();
+  } = useFormContext<BookEvaluation>();
 
   return (
     <BookStatusPeriodStep.Title
@@ -20,7 +19,6 @@ export default function BookStatusField() {
       <Controller
         name="status"
         control={control}
-        rules={{ required: '독서 상태를 선택해주세요.' }}
         render={({ field: { onChange, value } }) => (
           <Dropdown
             options={BOOK_STATUS_OPTIONS}

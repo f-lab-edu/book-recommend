@@ -1,9 +1,9 @@
 import BookEvaluationStepper from '@/components/book/BookEvaluationStepper';
 import SuspenseBoundary from '@/components/common/SuspenseBoundary';
-import BookDetailPageValidator from '@/components/validator/BookDetailPageValidator';
 import { DehydratedState, HydrationBoundary } from '@tanstack/react-query';
 import { createBookDetailServerSideProps } from '@/utils/serverSideProps';
 import dynamic from 'next/dynamic';
+import BookDetailSkeleton from '@/components/book/BookDetailSkeleton';
 
 export const getServerSideProps = createBookDetailServerSideProps();
 const BookDetailErrorFallback = dynamic(
@@ -23,13 +23,12 @@ export default function BookDetailPage({
 }) {
   return (
     <HydrationBoundary state={dehydratedState}>
-      <BookDetailPageValidator>
-        <SuspenseBoundary
-          rejectedFallback={(props) => <BookDetailErrorFallback {...props} />}
-        >
-          <BookEvaluationStepper />
-        </SuspenseBoundary>
-      </BookDetailPageValidator>
+      <SuspenseBoundary
+        loading={<BookDetailSkeleton />}
+        rejectedFallback={(props) => <BookDetailErrorFallback {...props} />}
+      >
+        <BookEvaluationStepper />
+      </SuspenseBoundary>
     </HydrationBoundary>
   );
 }

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
-import { BookStatusFormData } from '../evaluation/BookStatusPeriodStep';
+import { BookEvaluation } from '@/schema/bookEvaluation';
 
 export default function StepperNavigation() {
   const router = useRouter();
@@ -20,11 +20,9 @@ export default function StepperNavigation() {
     maxStep,
   });
 
-  const { handleSubmit } = useFormContext<BookStatusFormData>();
+  const { handleSubmit } = useFormContext<BookEvaluation>();
 
-  const isPreviousButtonDisabled = (step as string) === minStep.toString();
-
-  const onSubmit: SubmitHandler<BookStatusFormData> = (data) => {
+  const onSubmit: SubmitHandler<BookEvaluation> = (data) => {
     goNext();
   };
 
@@ -35,18 +33,27 @@ export default function StepperNavigation() {
           background-color: ${theme.colors.secondary};
           color: ${theme.colors.background};
           border: none;
-          border-radius: ${theme.borderRadius.md};
+          border-radius: ${theme.borderRadius.sm};
           padding: ${theme.spacing.sm} ${theme.spacing.md};
           cursor: pointer;
           font-size: ${theme.fontSize.sm};
-          transition: all 0.3s ease;
         `}
         onClick={handlePrevious}
-        disabled={isPreviousButtonDisabled}
       >
         이전
       </button>
-      <button onClick={handleSubmit(onSubmit)}>다음</button>
+      <button
+        css={css`
+          border: 1px solid ${theme.colors.secondary};
+          border-radius: ${theme.borderRadius.sm};
+          padding: ${theme.spacing.sm} ${theme.spacing.md};
+          cursor: pointer;
+          font-size: ${theme.fontSize.sm};
+        `}
+        onClick={handleSubmit(onSubmit)}
+      >
+        다음
+      </button>
     </div>
   );
 }

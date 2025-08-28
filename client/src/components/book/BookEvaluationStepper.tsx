@@ -1,5 +1,3 @@
-import BookDetailSkeleton from './BookDetailSkeleton';
-import SuspenseBoundary from '../common/SuspenseBoundary';
 import {
   bookStepperContainerStyle,
   bookStepperContentStyle,
@@ -8,22 +6,24 @@ import SwitchCases from '../common/SwitchCases';
 import { useStepValidation } from '@/hooks/useStepValidation';
 import { FormProvider, useForm } from 'react-hook-form';
 import StepperNavigation from './StepperNavigation';
-import BookRatingReviewStep from '../evaluation/BookRatingReviewStep';
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
-import dynamic from 'next/dynamic';
 import BookDetail from './BookDetail';
 import BookStatusPeriodStep from '../evaluation/BookStatusPeriodStep';
-
-const BookDetailErrorFallback = dynamic(
-  () =>
-    import('../common/ErrorFallbacks').then(
-      (mod) => mod.BookDetailErrorFallback,
-    ),
-  {
-    ssr: false,
-  },
-);
+import BookQuoteStep from '../evaluation/BookQuoteStep';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  bookEvaluationSchema,
+  bookPublishSchema,
+  bookQuoteSchema,
+  bookRatingSchema,
+  bookReviewSchema,
+  bookStatusPeriodSchema,
+} from '@/schema/bookEvaluation';
+import { useMemo } from 'react';
+import BookRatingStep from '../evaluation/BookRatingStep';
+import BookReviewStep from '../evaluation/BookReviewStep';
+import BookPublishStep from '../evaluation/BookPublishStep';
 
 export default function BookEvaluationStepper() {
   const { step, isbn, error } = useStepValidation();
@@ -32,17 +32,48 @@ export default function BookEvaluationStepper() {
     throw new Error(error || '잘못된 접근입니다.');
   }
 
-  const form = useForm();
+  const getSchemaForStep = (currentStep: string) => {
+    switch (currentStep) {
+      case '1':
+        return bookStatusPeriodSchema;
+      case '2':
+        return bookRatingSchema;
+      case '3':
+        return bookReviewSchema;
+      case '4':
+        return bookQuoteSchema('quotes');
+      case '5':
+        return bookPublishSchema;
+      default:
+        return bookEvaluationSchema; // 전체 스키마
+    }
+  };
+
+  const resolver = useMemo(() => {
+    return zodResolver(getSchemaForStep(step));
+  }, [step]);
+
+  const defaultValues = useMemo(() => {
+    return {
+      status: undefined,
+      startDate: undefined,
+      endDate: undefined,
+      rating: 0,
+      review: '',
+      quotes: [],
+      publish: false,
+    };
+  }, []);
+
+  const form = useForm({
+    resolver,
+    defaultValues,
+  });
 
   return (
     <div css={bookStepperContainerStyle}>
       <div css={bookStepperContentStyle}>
-        <SuspenseBoundary
-          loading={<BookDetailSkeleton />}
-          rejectedFallback={(props) => <BookDetailErrorFallback {...props} />}
-        >
-          <BookDetail isbn={isbn} />
-        </SuspenseBoundary>
+        <BookDetail isbn={isbn} />
 
         <FormProvider {...form}>
           <div
@@ -60,10 +91,10 @@ export default function BookEvaluationStepper() {
               value={step}
               cases={{
                 '1': <BookStatusPeriodStep />,
-                '2': <BookRatingReviewStep />,
-                '3': <div>평가 폼2 (구현 예정)</div>,
-                '4': <div>평가 폼3 (구현 예정)</div>,
-                '5': <div>평가 폼4 (구현 예정)</div>,
+                '2': <BookRatingStep />,
+                '3': <BookReviewStep />,
+                '4': <BookQuoteStep isbn={isbn as string} />,
+                '5': <BookPublishStep />,
               }}
               fallback={<div>잘못된 단계입니다.</div>}
             />
