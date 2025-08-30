@@ -1,1 +1,1 @@
-export const BEST_SELLER_API_URL = `ItemList.aspx?&QueryType=bestseller&start=1&SearchTarget=Book&output=js&Version=20131101`;
+export const BOOK_LIST_API_URL = `ItemList.aspx?&SearchTarget=Book&output=js&Version=20131101`;
