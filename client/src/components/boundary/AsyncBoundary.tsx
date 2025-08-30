@@ -33,9 +33,17 @@ const ErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
         align-items: center;
         justify-content: center;
         gap: 20px;
+        padding: 20px;
       `}
     >
-      {error.message}
+      <p
+        css={css`
+          text-align: center;
+          white-space: pre-line;
+        `}
+      >
+        {error.message}
+      </p>
       <button
         css={css`
           background-color: #007bff;
