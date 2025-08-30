@@ -1,8 +1,31 @@
+import { getBookList } from '@/remotes/book';
 import { css } from '@emotion/react';
+import { useQuery } from '@tanstack/react-query';
+import { QUERY_KEYS } from '@/lib/query-keys';
+import Grid from '../layout/Grid';
+import BookCard from '../book/BookCard';
 
 const NewBookList = () => {
+  const { data } = useQuery({
+    queryKey: QUERY_KEYS.books.newbooks(),
+    queryFn: () => getBookList('ItemNewSpecial'),
+  });
+
+  if (data?.item.length === 0 || data == null) {
+    throw new Error(
+      '신간 도서 데이터를 불러올 수 없습니다.\n잠시 후 다시 시도해주세요.',
+    );
+  }
+
   return (
-    <section>
+    <section
+      css={css`
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 20px;
+      `}
+    >
       <h2
         css={css`
           font-size: 18px;
@@ -12,8 +35,21 @@ const NewBookList = () => {
           cursor: pointer;
         `}
       >
-        신간 도서 &gt;{' '}
+        신간 도서 &gt;
       </h2>
+      <Grid
+        cols={2}
+        cssObject={css`
+          place-items: center;
+        `}
+      >
+        {data?.item.map((book) => (
+          <BookCard
+            key={book.isbn}
+            book={book}
+          />
+        ))}
+      </Grid>
     </section>
   );
 };
