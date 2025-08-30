@@ -1,7 +1,7 @@
-import { css } from "@emotion/react";
+import { css } from '@emotion/react';
 
 const _resetStyles = css`
-    /* Reset CSS */
+  /* Reset CSS */
   *,
   *::before,
   *::after {
@@ -22,12 +22,18 @@ const _resetStyles = css`
   }
 
   /* 기본 요소 리셋 */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-size: inherit;
     font-weight: inherit;
   }
 
-  ul, ol {
+  ul,
+  ol {
     list-style: none;
   }
 
@@ -47,7 +53,7 @@ const _resetStyles = css`
     max-width: 100%;
     height: auto;
   }
-`
+`;
 
 export const globalStyles = css`
   ${_resetStyles};
@@ -77,20 +83,28 @@ export const globalStyles = css`
     font-display: swap;
   }
 
-
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
 
-  html, body{
+  html,
+  body {
     width: 100%;
     height: 100%;
+    min-height: 100vh;
+  }
+
+  #__next {
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   body {
-    font-family: "Pretendard", sans-serif;
+    font-family: 'Pretendard', sans-serif;
     font-size: 16px;
     line-height: 1.5;
     color: #333;
