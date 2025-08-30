@@ -3,10 +3,11 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import { useQuery } from '@tanstack/react-query';
-import { getBestSellerBooks } from '@/remotes/book';
+import { getBookList } from '@/remotes/book';
 import Image from 'next/image';
 import { AladinBook, AladinBookApiResponse } from '@/types/book';
 import Link from 'next/link';
+import { QUERY_KEYS } from '@/lib/query-keys';
 
 const settings = {
   dots: true,
@@ -20,9 +21,15 @@ const settings = {
 
 const BestSellerCarousel = () => {
   const { data } = useQuery<AladinBookApiResponse>({
-    queryKey: ['bestseller'],
-    queryFn: getBestSellerBooks,
+    queryKey: QUERY_KEYS.books.bestseller(),
+    queryFn: () => getBookList('bestseller'),
   });
+
+  if (data?.item.length === 0 || data == null) {
+    throw new Error(
+      '베스트 셀러 데이터를 불러올 수 없습니다.\n잠시 후 다시 시도해주세요.',
+    );
+  }
 
   return (
     <div
