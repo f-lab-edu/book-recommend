@@ -11,18 +11,32 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 import { dehydrate } from '@tanstack/react-query';
-import { getBestSellerBooks } from '@/remotes/book';
+import { getBookList } from '@/remotes/book';
+import { QUERY_KEYS } from '@/lib/query-keys';
 
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-  query,
-}) => {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const queryClient = new QueryClient();
   try {
-    const queryClient = new QueryClient();
+    const result = await Promise.allSettled([
+      Promise.reject(new Error('Something wrong')),
+      // queryClient.prefetchQuery({
+      //   queryKey: QUERY_KEYS.books.bestseller(),
+      //   // queryFn: () => getBookList('bestseller'),
+      //   queryFn: () => {
+      //     throw new Error('Something wrong');
+      //   },
+      // }),
 
-    await queryClient.prefetchQuery({
-      queryKey: ['bestseller'],
-      queryFn: () => getBestSellerBooks(),
+      queryClient.prefetchQuery({
+        queryKey: QUERY_KEYS.books.newbooks(),
+        queryFn: () => getBookList('ItemNewSpecial'),
+      }),
+    ]);
+
+    result.some((result) => {
+      if (result.status === 'rejected') {
+        throw new Error(result.reason.message);
+      }
     });
 
     return {
@@ -34,7 +48,8 @@ export const getServerSideProps: GetServerSideProps = async ({
     console.error('getServerSideProps error:', error);
     return {
       props: {
-        dehydratedState: {},
+        dehydratedState: dehydrate(queryClient),
+        error: { message: (error as Error).message },
       },
     };
   }
@@ -42,8 +57,10 @@ export const getServerSideProps: GetServerSideProps = async ({
 
 export default function Home({
   dehydratedState,
+  error,
 }: {
   dehydratedState: DehydratedState;
+  error: { message: string };
 }) {
   return (
     <>
@@ -60,7 +77,7 @@ export default function Home({
       </Head>
 
       <HydrationBoundary state={dehydratedState}>
-        <HomeMain />
+        <HomeMain error={error} />
       </HydrationBoundary>
 
       {/* <SuspenseBoundary
