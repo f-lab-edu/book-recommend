@@ -1,7 +1,8 @@
-import { BEST_SELLER_API_URL } from '@/constants/api';
+import { BOOK_LIST_API_URL } from '@/constants/api';
 import { Book, BookApiResponse, AladinBookApiResponse } from '../types/book';
 import { aladinApi } from './api';
 import { aladinBookMapper } from '@/utils/bookMapper';
+import { QueryType } from '@/lib/query-keys';
 
 // export const getBookList = async (
 //   page: number,
@@ -18,11 +19,15 @@ import { aladinBookMapper } from '@/utils/bookMapper';
 //   return response.documents.flatMap((page) => page)[0];
 // };
 
-export const getBestSellerBooks = async (): Promise<AladinBookApiResponse> => {
+export const getBookList = async (
+  queryType: QueryType,
+  start: number = 1,
+  maxResults: number = 5,
+): Promise<AladinBookApiResponse> => {
   try {
     const response = await aladinApi
       .get<AladinBookApiResponse>(
-        `${BEST_SELLER_API_URL}&ttbkey=${process.env.NEXT_PUBLIC_ALADIN_API_KEY}&MaxResults=5`,
+        `${BOOK_LIST_API_URL}&ttbkey=${process.env.NEXT_PUBLIC_ALADIN_API_KEY}&QueryType=${queryType}&start=${start}&MaxResults=${maxResults}`,
       )
       .json();
 
@@ -33,7 +38,7 @@ export const getBestSellerBooks = async (): Promise<AladinBookApiResponse> => {
       itemsPerPage: response.itemsPerPage,
     };
   } catch (error) {
-    console.error('getBestSellerBooks error:', error);
+    console.error('getBookList error:', error);
     return {
       item: [],
       totalResults: 0,
