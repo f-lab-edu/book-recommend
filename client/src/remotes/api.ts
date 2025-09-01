@@ -31,6 +31,21 @@ export const api = ky.create({
   },
 });
 
+// 카카오 API용 인스턴스
+export const kakaoApi = ky.create({
+  prefixUrl: 'https://dapi.kakao.com',
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+  },
+  timeout: 10000,
+  retry: {
+    limit: 2,
+    methods: ['get'],
+    statusCodes: RETRYABLE_STATUS_CODES,
+  },
+});
+
 // 알라딘 API용 인스턴스
 // http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbrmdk6qjs2026001&QueryType=bestseller&MaxResults=10&start=1&SearchTarget=Book&output=js&Version=20131101
 export const aladinApi = ky.create({
