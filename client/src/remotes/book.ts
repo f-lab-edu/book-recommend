@@ -21,10 +21,15 @@ import { QueryType } from '@/lib/query-keys';
 
 export const getBookList = async (
   queryType: QueryType,
-  start: number = 1,
-  maxResults: number = 5,
+  filter?: {
+    start?: number;
+    maxResults?: number;
+  },
 ): Promise<AladinBookApiResponse> => {
   try {
+    const start = filter?.start ?? 1;
+    const maxResults = filter?.maxResults ?? 5;
+
     const response = await aladinApi
       .get<AladinBookApiResponse>(
         `${BOOK_LIST_API_URL}&ttbkey=${process.env.NEXT_PUBLIC_ALADIN_API_KEY}&QueryType=${queryType}&start=${start}&MaxResults=${maxResults}`,
