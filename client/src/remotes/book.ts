@@ -1,23 +1,23 @@
 import { BOOK_LIST_API_URL } from '@/constants/api';
 import { Book, BookApiResponse, AladinBookApiResponse } from '../types/book';
-import { aladinApi } from './api';
+import { aladinApi, kakaoApi } from './api';
 import { aladinBookMapper } from '@/utils/bookMapper';
 import { QueryType } from '@/lib/query-keys';
 
-// export const getBookList = async (
-//   page: number,
-//   query: string,
-// ): Promise<BookApiResponse> => {
-//   const response = await kakaoApi.get(`?page=${page}&query=${query}`).json();
-//   return response as BookApiResponse;
-// };
+export const getBooks = async (
+  page: number,
+  query: string,
+): Promise<BookApiResponse> => {
+  const response = await kakaoApi.get(`?page=${page}&query=${query}`).json();
+  return response as BookApiResponse;
+};
 
-// export const getBookDetail = async (isbn: string): Promise<Book> => {
-//   const response = (await kakaoApi
-//     .get(`?target=isbn&query=${isbn}`)
-//     .json()) as BookApiResponse;
-//   return response.documents.flatMap((page) => page)[0];
-// };
+export const getBookDetail = async (isbn: string): Promise<Book> => {
+  const response = (await kakaoApi
+    .get(`?target=isbn&query=${isbn}`)
+    .json()) as BookApiResponse;
+  return response.documents.flatMap((page) => page)[0];
+};
 
 export const getBookList = async (
   queryType: QueryType,

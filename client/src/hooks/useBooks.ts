@@ -1,5 +1,5 @@
 import { BookApiResponse } from '@/types/book';
-import { getBookDetail, getBookList } from '@/remotes/book';
+import { getBookDetail, getBooks } from '@/remotes/book';
 import { InfiniteData } from '@tanstack/react-query';
 
 export const QUERY_KEYS = {
@@ -21,7 +21,7 @@ export function useBookList(query: string) {
   return {
     queryKey: [QUERY_KEYS.BOOK, QUERY_KEYS.INFINITE, query] as const,
     queryFn: ({ pageParam = 1 }: { pageParam?: number }) => {
-      return getBookList(pageParam, query);
+      return getBooks(pageParam, query);
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage: BookApiResponse, pages: BookApiResponse[]) => {
