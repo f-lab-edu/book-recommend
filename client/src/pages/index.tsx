@@ -18,18 +18,18 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
   try {
     const result = await Promise.allSettled([
-      Promise.reject(new Error('Something wrong')),
-      // queryClient.prefetchQuery({
-      //   queryKey: QUERY_KEYS.books.bestseller(),
-      //   // queryFn: () => getBookList('bestseller'),
-      //   queryFn: () => {
-      //     throw new Error('Something wrong');
-      //   },
-      // }),
+      // Promise.reject(new Error('Something wrong')),
+      queryClient.prefetchQuery({
+        queryKey: QUERY_KEYS.books.bestseller(),
+        queryFn: () => getBookList('bestseller'),
+        // queryFn: () => {
+        //   throw new Error('Something wrong');
+        // },
+      }),
 
       queryClient.prefetchQuery({
         queryKey: QUERY_KEYS.books.newbooks(),
-        queryFn: () => getBookList('ItemNewSpecial'),
+        queryFn: () => getBookList('ItemNewSpecial', { maxResults: 4 }),
       }),
     ]);
 
