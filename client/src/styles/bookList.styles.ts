@@ -30,6 +30,7 @@ export const bookCardStyle = css`
   transition: all 0.3s ease;
   height: 320px; /* 높이 통일 */
   background: white;
+  width: 220px;
 
   &:hover {
     transform: translateY(-4px);
