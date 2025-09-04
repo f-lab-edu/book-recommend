@@ -1,8 +1,18 @@
-import { BOOK_LIST_API_URL } from '@/constants/api';
-import { Book, BookApiResponse, AladinBookApiResponse } from '../types/book';
-import { aladinApi, kakaoApi } from './api';
-import { aladinBookMapper } from '@/utils/bookMapper';
+import { BOOK_DETAIL_API_URL, BOOK_LIST_API_URL } from '@/constants/api';
+import {
+  BookApiResponse,
+  AladinBookApiResponse,
+  AutoCompleteResponse,
+  AladinBook,
+} from '../types/book';
+import { aladinApi, api, kakaoApi } from './api';
 import { QueryType } from '@/lib/query-keys';
+
+const OPT_RESULT_PARAM = 'ebookList,usedList,reviewList';
+const DEFAULT_QUERY_PARAMS = {
+  Output: 'js',
+  Version: '20131101',
+};
 
 export const getBooks = async (
   page: number,
@@ -12,11 +22,26 @@ export const getBooks = async (
   return response as BookApiResponse;
 };
 
-export const getBookDetail = async (isbn: string): Promise<Book> => {
-  const response = (await kakaoApi
-    .get(`?target=isbn&query=${isbn}`)
-    .json()) as BookApiResponse;
-  return response.documents.flatMap((page) => page)[0];
+export const getBookDetail = async (
+  isbn: string,
+  itemIdType: 'ISBN' | 'ItemId' = 'ItemId',
+): Promise<AladinBook> => {
+  console.log('here?');
+  const response = await aladinApi.get<AladinBookApiResponse>(
+    `${BOOK_DETAIL_API_URL}`,
+    {
+      searchParams: {
+        ...DEFAULT_QUERY_PARAMS,
+        OptResult: OPT_RESULT_PARAM,
+        itemId: isbn,
+        itemIdType: itemIdType,
+        ttbkey: process.env.NEXT_PUBLIC_ALADIN_API_KEY || '',
+      },
+    },
+  );
+
+  const result = await response.json();
+  return result.item[0];
 };
 
 export const getBookList = async (
@@ -31,9 +56,14 @@ export const getBookList = async (
     const maxResults = filter?.maxResults ?? 5;
 
     const response = await aladinApi
-      .get<AladinBookApiResponse>(
-        `${BOOK_LIST_API_URL}&ttbkey=${process.env.NEXT_PUBLIC_ALADIN_API_KEY}&QueryType=${queryType}&start=${start}&MaxResults=${maxResults}`,
-      )
+      .get<AladinBookApiResponse>(`${BOOK_LIST_API_URL}`, {
+        searchParams: {
+          QueryType: queryType,
+          start: start,
+          MaxResults: maxResults,
+          ttbkey: process.env.NEXT_PUBLIC_ALADIN_API_KEY || '',
+        },
+      })
       .json();
 
     return {
@@ -51,4 +81,46 @@ export const getBookList = async (
       itemsPerPage: 0,
     };
   }
+};
+
+// NextJS API Route 사용
+export const getAutoComplete = async (
+  keyword: string,
+): Promise<readonly AutoCompleteResponse[] | null> => {
+  if (keyword.trim().length === 0) {
+    return null;
+  }
+
+  try {
+    const response = await api
+      .get<
+        readonly AutoCompleteResponse[]
+      >(`api/autocomplete?keyword=${encodeURIComponent(keyword)}`)
+      .json();
+
+    if (!response) {
+      throw new Error(`AutoComplete API error: Unknown error`);
+    }
+
+    return response;
+  } catch (error) {
+    console.error('getAutoComplete error:', error);
+    throw error;
+  }
+};
+
+export const getBookSearch = async (
+  query: string,
+  start: number,
+  maxResults: number,
+): Promise<AladinBookApiResponse> => {
+  const response = await api.get(`api/book-search`, {
+    searchParams: {
+      Query: query,
+      QueryType: 'Title',
+      start: start,
+      MaxResults: maxResults,
+    },
+  });
+  return response.json();
 };
