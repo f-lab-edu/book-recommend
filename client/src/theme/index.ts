@@ -3,7 +3,11 @@ export const theme = {
     primary: '#007bff',
     secondary: '#6c757d',
     background: '#ffffff',
-    text: '#333333',
+    text: {
+      primary: '#333333',
+      secondary: '#666666',
+      tertiary: '#999999',
+    },
     error: '#dc3545',
   },
   fontSize: {
@@ -15,6 +19,8 @@ export const theme = {
   },
   fontWeight: {
     normal: 400,
+    medium: 500,
+    semibold: 600,
     bold: 700,
   },
   spacing: {

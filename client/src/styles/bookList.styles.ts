@@ -1,5 +1,5 @@
-import { theme } from "@/theme";
-import { css } from "@emotion/react";
+import { theme } from '@/theme';
+import { css } from '@emotion/react';
 
 export const bookListStyle = css`
   display: grid;
@@ -26,17 +26,23 @@ export const bookCardStyle = css`
   cursor: pointer;
   border: 1px solid ${theme.colors.secondary};
   border-radius: ${theme.spacing.sm};
-  padding: ${theme.spacing.sm};
+  padding: ${theme.spacing.md};
   transition: all 0.3s ease;
+  height: 320px; /* 높이 통일 */
+  background: white;
+  width: 220px;
+
   &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: ${theme.colors.primary};
   }
 `;
 
 export const bookImageContainerStyle = css`
-  width: 100px;
-  height: 150px;
-  object-fit: cover;
-  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  margin-bottom: ${theme.spacing.sm};
+  height: 160px; /* 이미지 높이 고정 */
+  width: 100%;
 `;

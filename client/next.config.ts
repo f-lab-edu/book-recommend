@@ -1,6 +1,7 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  strictMode: false,
   /* config options here */
   reactStrictMode: true,
   images: {
@@ -10,9 +11,15 @@ const nextConfig: NextConfig = {
         hostname: 'search1.kakaocdn.net',
         port: '',
         pathname: '/**',
-      }
-    ]
-  }
+      },
+      {
+        protocol: 'https',
+        hostname: 'image.aladin.co.kr',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;
