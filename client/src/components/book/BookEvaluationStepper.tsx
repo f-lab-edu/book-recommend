@@ -60,7 +60,12 @@ export default function BookEvaluationStepper() {
       endDate: undefined,
       rating: 0,
       review: '',
-      quotes: [],
+      quotes: [
+        {
+          quote: '',
+          pageNum: '0',
+        },
+      ],
       publish: false,
     };
   }, []);
