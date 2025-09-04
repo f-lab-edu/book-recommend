@@ -34,9 +34,9 @@ export default React.memo(function BookDetail({ isbn }: { isbn: string }) {
     <div css={cardStyle}>
       <div css={headerStyle}>
         <div css={coverStyle}>
-          {book.thumbnail != '' ? (
+          {book.cover != '' ? (
             <img
-              src={book.thumbnail}
+              src={book.cover}
               alt={book.title}
               css={imageStyle}
             />
@@ -46,21 +46,27 @@ export default React.memo(function BookDetail({ isbn }: { isbn: string }) {
         </div>
         <div css={infoStyle}>
           <h1 css={titleStyle}>{book.title}</h1>
-          <p css={textStyle}>저자: {book.authors.join(', ')}</p>
+          <p css={textStyle}>저자: {book.author}</p>
           <p css={textStyle}>출판사: {book.publisher}</p>
-          <p css={textStyle}>출판일: {formatDate(book.datetime)}</p>
+          <p css={textStyle}>출판일: {formatDate(book.pubDate)}</p>
         </div>
       </div>
 
       <div css={contentStyle}>
         <h2 css={contentTitleStyle}>책 소개</h2>
-        <p css={contentTextStyle}>{book.contents}</p>
+        <p css={contentTextStyle}>{book.description}</p>
       </div>
 
       <div css={footerStyle}>
         <div css={priceStyle}>
-          <span css={priceTextStyle}>₩{book.price.toLocaleString()}</span>
-          {book.sale_price !== book.price && <span css={salePriceStyle}>₩{book.sale_price.toLocaleString()}</span>}
+          <span css={priceTextStyle}>
+            ₩{book.priceStandard.toLocaleString()}
+          </span>
+          {book.priceSales !== book.priceStandard && (
+            <span css={salePriceStyle}>
+              ₩{book.priceSales.toLocaleString()}
+            </span>
+          )}
         </div>
         <p css={isbnStyle}>ISBN: {book.isbn}</p>
       </div>
