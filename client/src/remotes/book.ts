@@ -92,8 +92,8 @@ export const getAutoComplete = async (
 
 export const getBookSearch = async (
   query: string,
-  start: number,
-  maxResults: number,
+  start: number = 1,
+  maxResults: number = 10,
 ): Promise<AladinBookApiResponse> => {
   const response = await api.get(`api/book-search`, {
     searchParams: {
