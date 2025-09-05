@@ -71,3 +71,5 @@ export type AutoCompleteResponse = {
   value: string;
   label: string;
 };
+
+export type ItemIdType = 'ItemId' | 'ISBN';
