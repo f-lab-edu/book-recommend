@@ -4,6 +4,7 @@ import {
   AladinBookApiResponse,
   AutoCompleteResponse,
   AladinBook,
+  ItemIdType,
 } from '../types/book';
 import { aladinApi, api, kakaoApi } from './api';
 import { QueryType } from '@/lib/query-keys';
@@ -22,28 +23,6 @@ export const getBooks = async (
   return response as BookApiResponse;
 };
 
-export const getBookDetail = async (
-  isbn: string,
-  itemIdType: 'ISBN' | 'ItemId' = 'ItemId',
-): Promise<AladinBook> => {
-  console.log('here?');
-  const response = await aladinApi.get<AladinBookApiResponse>(
-    `${BOOK_DETAIL_API_URL}`,
-    {
-      searchParams: {
-        ...DEFAULT_QUERY_PARAMS,
-        OptResult: OPT_RESULT_PARAM,
-        itemId: isbn,
-        itemIdType: itemIdType,
-        ttbkey: process.env.NEXT_PUBLIC_ALADIN_API_KEY || '',
-      },
-    },
-  );
-
-  const result = await response.json();
-  return result.item[0];
-};
-
 export const getBookList = async (
   queryType: QueryType,
   filter?: {
@@ -58,10 +37,12 @@ export const getBookList = async (
     const response = await aladinApi
       .get<AladinBookApiResponse>(`${BOOK_LIST_API_URL}`, {
         searchParams: {
+          ...DEFAULT_QUERY_PARAMS,
           QueryType: queryType,
           start: start,
           MaxResults: maxResults,
           ttbkey: process.env.NEXT_PUBLIC_ALADIN_API_KEY || '',
+          SearchTarget: 'Book',
         },
       })
       .json();
@@ -123,4 +104,25 @@ export const getBookSearch = async (
     },
   });
   return response.json();
+};
+
+export const getBookDetail = async (
+  isbn: string,
+  itemIdType: ItemIdType = 'ItemId',
+): Promise<AladinBook> => {
+  const response = await aladinApi.get<AladinBookApiResponse>(
+    `${BOOK_DETAIL_API_URL}`,
+    {
+      searchParams: {
+        ...DEFAULT_QUERY_PARAMS,
+        OptResult: OPT_RESULT_PARAM,
+        itemId: isbn,
+        itemIdType: itemIdType,
+        ttbkey: process.env.NEXT_PUBLIC_ALADIN_API_KEY || '',
+      },
+    },
+  );
+
+  const result = await response.json();
+  return result.item[0];
 };
