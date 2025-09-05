@@ -24,19 +24,23 @@ const AutoCompleteInput = ({
   ...props
 }: AutoCompleteInputProps) => {
   const [keyword, setKeyword] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { data: options, isFetching } = useDebouncedAutoCompleteInput({
     keyword,
     fetchOptions,
+    delay: 300,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setKeyword(value);
+    setIsDropdownOpen(true);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && onSearch) {
       onSearch(keyword);
+      setIsDropdownOpen(false);
     }
   };
 
@@ -107,8 +111,10 @@ const AutoCompleteInput = ({
 
         <Dropdown
           options={options || []}
-          onChange={onOptionSelect}
+          onOptionSelect={onOptionSelect}
           isFetching={isFetching}
+          isDropdownOpen={isDropdownOpen}
+          setIsDropdownOpen={setIsDropdownOpen}
         />
       </div>
     </div>

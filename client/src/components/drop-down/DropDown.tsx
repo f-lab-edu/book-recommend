@@ -1,15 +1,15 @@
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
 import DropdownList from './DropdownList';
-import { useRef, useState } from 'react';
 import useClickOutside from '@/hooks/useClickOutside';
+import { useRef } from 'react';
 
 type DropdownProps = {
+  isDropdownOpen: boolean;
+  setIsDropdownOpen: (isDropdownOpen: boolean) => void;
   options: readonly { label: string; value: string }[];
-  defaultValue?: string;
-  onChange: (value: string) => void;
+  onOptionSelect: (value: string) => void;
   isError?: boolean;
-  needsFolded?: boolean;
   isFetching?: boolean;
 };
 
@@ -23,57 +23,54 @@ export type HandleItemSelectType = ({
 
 export default function Dropdown({
   options,
-  defaultValue,
-  onChange,
+  onOptionSelect,
   isError,
-  needsFolded = false,
   isFetching = false,
+  isDropdownOpen,
+  setIsDropdownOpen,
 }: DropdownProps) {
-  const dropDownRef = useRef<HTMLDivElement>(null);
-  const [activeValue, setActiveValue] = useState<string>(defaultValue || '');
-  const [isOpen, setIsOpen] = useState(needsFolded ? false : true);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleDropdownOpen = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    setIsOpen(true);
+    setIsDropdownOpen(true);
   };
 
   const handleDropdownClose = () => {
-    setIsOpen(false);
+    setIsDropdownOpen(false);
   };
 
   const handleItemSelect: HandleItemSelectType = ({ label, value }) => {
-    setActiveValue(label);
     handleDropdownClose();
-    onChange(value);
+    onOptionSelect(value);
   };
 
-  useClickOutside({ ref: dropDownRef, callback: handleDropdownClose });
+  useClickOutside({
+    ref: containerRef,
+    callback: handleDropdownClose,
+  });
 
   return (
     <div
       css={css`
         position: relative;
         width: 100%;
-        // height: 40px;
         // border: 1px solid ${isError
           ? theme.colors.error
           : theme.colors.primary};
         border-radius: ${theme.borderRadius.sm};
         padding: ${theme.spacing.sm} ${theme.spacing.md};
       `}
-      ref={dropDownRef}
+      ref={containerRef}
       onClick={handleDropdownOpen}
     >
-      {/* {isOpen ? ( */}
-      <DropdownList
-        options={options}
-        handleClick={handleItemSelect}
-        isFetching={isFetching}
-      />
-      {/* ) : (
-        <span>{activeValue || defaultValue || '선택1'}</span>
-      )} */}
+      {isDropdownOpen && (
+        <DropdownList
+          options={options}
+          handleClick={handleItemSelect}
+          isFetching={isFetching}
+        />
+      )}
     </div>
   );
 }
