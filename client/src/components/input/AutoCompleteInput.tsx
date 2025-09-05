@@ -11,23 +11,26 @@ type Option = {
 };
 
 type AutoCompleteInputProps = InputHTMLAttributes<HTMLInputElement> & {
-  fetchOptions: (keyword: string) => Promise<readonly Option[] | null>;
-  placeholder?: string;
+  keyword: string;
+  setKeyword: (keyword: string) => void;
+  fetchAutoComplete: (keyword: string) => Promise<readonly Option[] | null>;
   onOptionSelect: (value: string) => void;
-  onSearch?: (keyword: string) => void;
+  onSearch: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  placeholder?: string;
 };
 
 const AutoCompleteInput = ({
   onOptionSelect,
-  fetchOptions,
+  fetchAutoComplete,
   onSearch,
+  keyword,
+  setKeyword,
   ...props
 }: AutoCompleteInputProps) => {
-  const [keyword, setKeyword] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { data: options, isFetching } = useDebouncedAutoCompleteInput({
     keyword,
-    fetchOptions,
+    fetchAutoComplete,
     delay: 300,
   });
 
@@ -38,8 +41,8 @@ const AutoCompleteInput = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && onSearch) {
-      onSearch(keyword);
+    if (e.key === 'Enter') {
+      onSearch(e);
       setIsDropdownOpen(false);
     }
   };

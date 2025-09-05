@@ -1,12 +1,29 @@
 import { css } from '@emotion/react';
 import { theme } from '@/theme';
-import { useBookSearch } from '@/hooks/useBookSearch';
+import { useInfiniteBookSearch } from '@/hooks/useInfiniteBookSearch';
 import SearchInput from '../search/SearchInput';
 import SearchResults from '../search/SearchResults';
+import { useRouter } from 'next/router';
+
+const MAX_RESULTS = 10;
 
 const BookSearchList = () => {
-  const { searchResults, isLoading, error, searchBooks, selectBook } =
-    useBookSearch();
+  const router = useRouter();
+
+  const {
+    data: searchResults,
+    isFetchingNextPage,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    setKeyword,
+    keyword,
+    handleSearch,
+  } = useInfiniteBookSearch(MAX_RESULTS);
+
+  const handleSelectItem = (isbn: string) => {
+    router.push(`/books/${isbn}`);
+  };
 
   return (
     <div
@@ -18,15 +35,19 @@ const BookSearchList = () => {
       `}
     >
       <SearchInput
-        onSearch={searchBooks}
-        onOptionSelect={selectBook}
+        keyword={keyword}
+        setKeyword={setKeyword}
+        onSearch={handleSearch}
+        onOptionSelect={handleSelectItem}
         placeholder="검색할 도서명을 입력하세요."
       />
 
       <SearchResults
-        results={searchResults}
-        isLoading={isLoading}
+        results={searchResults || []}
+        isLoadMore={isFetchingNextPage}
         error={error}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
       />
     </div>
   );
