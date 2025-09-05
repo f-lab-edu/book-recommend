@@ -1,20 +1,28 @@
 import { css } from '@emotion/react';
 import { AladinBook, Book } from '@/types/book';
-import BookList from '../book/BookList';
 import Loading from '../common/Loading';
 import ErrorMessage from '../common/ErrorMessage';
 import { theme } from '@/theme';
 import BookCard from '../book/BookCard';
 import Grid from '../layout/Grid';
+import InfiniteScroll from '../common/InfiniteScroll';
 
 interface SearchResultsProps {
   results: AladinBook[];
-  isLoading: boolean;
-  error: string | null;
+  isLoadMore: boolean;
+  error: Error | null;
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
 }
 
-const SearchResults = ({ results, isLoading, error }: SearchResultsProps) => {
-  if (isLoading) {
+const SearchResults = ({
+  results,
+  isLoadMore,
+  error,
+  fetchNextPage,
+  hasNextPage,
+}: SearchResultsProps) => {
+  if (isLoadMore) {
     return (
       <div
         css={css`
@@ -33,7 +41,7 @@ const SearchResults = ({ results, isLoading, error }: SearchResultsProps) => {
           margin-top: ${theme.spacing.lg};
         `}
       >
-        <ErrorMessage message={error} />
+        <ErrorMessage errorMessage={error.message} />
       </div>
     );
   }
@@ -55,6 +63,9 @@ const SearchResults = ({ results, isLoading, error }: SearchResultsProps) => {
   return (
     <div
       css={css`
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         margin-top: ${theme.spacing.lg};
       `}
     >
@@ -66,6 +77,11 @@ const SearchResults = ({ results, isLoading, error }: SearchResultsProps) => {
           />
         ))}
       </Grid>
+      <InfiniteScroll
+        isLoadMore={isLoadMore}
+        hasNextPage={hasNextPage}
+        fetchNextPage={fetchNextPage}
+      />
     </div>
   );
 };

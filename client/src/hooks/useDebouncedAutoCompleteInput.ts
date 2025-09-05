@@ -4,19 +4,18 @@ import { useEffect, useState } from 'react';
 
 type UseAutoCompleteInputProps = {
   keyword: string;
-  fetchOptions: (
+  fetchAutoComplete: (
     keyword: string,
   ) => Promise<readonly AutoCompleteResponse[] | null>;
-  needDebounce?: boolean;
   delay?: number;
 };
 
 export default function useDebouncedAutoCompleteInput({
   keyword,
-  fetchOptions,
+  fetchAutoComplete,
   delay = 500,
 }: UseAutoCompleteInputProps) {
-  const [dbouncedKeyword, setDebouncedKeyword] = useState(keyword);
+  const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -26,7 +25,7 @@ export default function useDebouncedAutoCompleteInput({
   }, [keyword]);
 
   return useQuery<readonly AutoCompleteResponse[] | null>({
-    queryKey: ['autocomplete', dbouncedKeyword],
-    queryFn: () => fetchOptions(dbouncedKeyword),
+    queryKey: ['autocomplete', debouncedKeyword],
+    queryFn: () => fetchAutoComplete(debouncedKeyword),
   });
 }
