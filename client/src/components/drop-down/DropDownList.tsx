@@ -20,36 +20,17 @@ export default function DropdownList({
     <div
       css={css`
         position: absolute;
-        top: 100%;
+        top: 0;
         left: 0;
-        // border: 1px solid ${theme.colors.secondary};
-        // border-top: none;
-        // padding: ${theme.spacing.sm} ${theme.spacing.md};
-        // border-radius: 0 0 ${theme.borderRadius.sm} ${theme.borderRadius.sm};
+        border: ${options.length > 0 || isFetching
+          ? '1px solid ' + theme.colors.secondary
+          : 'none'};
         width: 100%;
-        height: ${isFetching ? '200px' : options.length > 0 ? 'auto' : '0px'};
+        height: ${isFetching ? '200px' : 'auto'};
         max-height: 200px;
         overflow-y: auto;
         background: white;
         z-index: 10;
-
-        ${isFetching
-          ? css`
-              height: 200px;
-              border: 1px solid ${theme.colors.secondary};
-            `
-          : `${
-              options.length == 0
-                ? css`
-                    height: 0px;
-                    border: none;
-                  `
-                : css`
-                    height: auto;
-                    border: 1px solid ${theme.colors.secondary};
-                  `
-            }
-        `}
       `}
     >
       {isFetching && (
