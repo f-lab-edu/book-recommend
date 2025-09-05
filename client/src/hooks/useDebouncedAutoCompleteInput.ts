@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { AutoCompleteResponse } from '@/types/book';
 import { useEffect, useState } from 'react';
+import { QUERY_KEYS } from '@/lib/query-keys';
 
 type UseAutoCompleteInputProps = {
   keyword: string;
@@ -25,7 +26,7 @@ export default function useDebouncedAutoCompleteInput({
   }, [keyword]);
 
   return useQuery<readonly AutoCompleteResponse[] | null>({
-    queryKey: ['autocomplete', debouncedKeyword],
+    queryKey: QUERY_KEYS.books.autocomplete(debouncedKeyword),
     queryFn: () => fetchAutoComplete(debouncedKeyword),
   });
 }
