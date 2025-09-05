@@ -14,21 +14,19 @@ export default async function handler(
 
   const { Query, QueryType, start, MaxResults } = req.query;
 
-  // 키워드 검증
+  // 검색어 검증
   if (!Query || typeof Query !== 'string') {
     return res.status(400).json({ message: 'Query is required' });
   }
 
-  // 빈 키워드 체크
+  // 빈 검색어 체크
   if (Query.trim().length === 0) {
     return res.status(400).json({ message: 'Query cannot be empty' });
   }
 
   try {
-    // 알라딘 AutoComplete API 호출
+    // 알라딘 BookSearch API 호출
     const url = `${process.env.NEXT_PUBLIC_ALADIN_API_URL}/${BOOK_SEARCH_API_URL}&ttbkey=${process.env.NEXT_PUBLIC_ALADIN_API_KEY}&Query=${Query}&QueryType=${QueryType}&start=${start}&MaxResults=${MaxResults}`;
-
-    console.log('UURRLL: ', url);
 
     const response = await ky.get(url);
     const results = await response.json();

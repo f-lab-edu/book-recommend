@@ -25,12 +25,8 @@ export default async function handler(
   }
 
   try {
-    console.log('kkeyword: ', keyword);
-
     // 알라딘 AutoComplete API 호출
     const url = `${process.env.NEXT_PUBLIC_ALADIN_API_URL}/${AUTO_COMPLETE_API_URL}&q=${keyword}`;
-
-    console.log('UURRLL: ', url);
 
     const response = await ky.get(url);
     const text = await response.text();
