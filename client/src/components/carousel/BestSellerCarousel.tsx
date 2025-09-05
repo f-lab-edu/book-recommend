@@ -20,19 +20,19 @@ const settings = {
   arrows: true,
 };
 
-const BestSellerCarousel = () => {
+type BestSellerCarouselProps = {
+  error: { message: string };
+};
+
+const BestSellerCarousel = ({ error }: BestSellerCarouselProps) => {
+  if (error?.message != null) {
+    throw new Error(error.message);
+  }
+
   const { data } = useQuery<AladinBookApiResponse>({
     queryKey: QUERY_KEYS.books.bestseller(),
     queryFn: () => getBookList('bestseller'),
   });
-
-  console.log('bestseller', data);
-
-  if (data?.item.length === 0 || data == null) {
-    throw new Error(
-      '베스트 셀러 데이터를 불러올 수 없습니다.\n잠시 후 다시 시도해주세요.',
-    );
-  }
 
   return (
     <div
