@@ -14,7 +14,6 @@ interface SearchResultsProps {
 }
 
 const SearchResults = ({ results, isLoading, error }: SearchResultsProps) => {
-  console.log('BBOOKK results: ', results);
   if (isLoading) {
     return (
       <div
