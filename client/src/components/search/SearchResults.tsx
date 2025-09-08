@@ -10,7 +10,6 @@ import InfiniteScroll from '../common/InfiniteScroll';
 interface SearchResultsProps {
   results: AladinBook[];
   isLoadMore: boolean;
-  error: Error | null;
   fetchNextPage: () => void;
   hasNextPage: boolean;
 }
@@ -18,48 +17,9 @@ interface SearchResultsProps {
 const SearchResults = ({
   results,
   isLoadMore,
-  error,
   fetchNextPage,
   hasNextPage,
 }: SearchResultsProps) => {
-  if (isLoadMore) {
-    return (
-      <div
-        css={css`
-          margin-top: ${theme.spacing.lg};
-        `}
-      >
-        <Loading />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div
-        css={css`
-          margin-top: ${theme.spacing.lg};
-        `}
-      >
-        <ErrorMessage errorMessage={error.message} />
-      </div>
-    );
-  }
-
-  if (results.length === 0) {
-    return (
-      <div
-        css={css`
-          margin-top: ${theme.spacing.lg};
-          text-align: center;
-          color: ${theme.colors.text.secondary};
-        `}
-      >
-        검색 결과가 없습니다.
-      </div>
-    );
-  }
-
   return (
     <div
       css={css`
@@ -70,13 +30,18 @@ const SearchResults = ({
       `}
     >
       <Grid cols={2}>
-        {results.map((result) => (
-          <BookCard
-            key={result.isbn}
-            book={result}
-          />
-        ))}
+        {results.length > 0 ? (
+          results.map((result) => (
+            <BookCard
+              key={result.isbn}
+              book={result}
+            />
+          ))
+        ) : (
+          <>검색 결과가 없습니다.</>
+        )}
       </Grid>
+      {isLoadMore && <Loading />}
       <InfiniteScroll
         isLoadMore={isLoadMore}
         hasNextPage={hasNextPage}
