@@ -17,9 +17,9 @@ export const QUERY_KEYS = {
       [QUERY_KEYS.books.default, 'infinite', ...args] as const,
   },
   recommend: {
-    music: (queryType: QueryType, filter: FilterType) => {
-      const filterValues = filter ? Object.values(filter) : [];
-      return [queryType, ...filterValues] as const;
+    default: ['recommend', 'item-editor-choice'],
+    music: (filter: FilterType = { startIndex: 0, maxResults: 5 }) => {
+      return [QUERY_KEYS.recommend.default, filter] as const;
     },
   },
 };

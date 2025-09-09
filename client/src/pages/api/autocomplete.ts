@@ -1,7 +1,7 @@
 import { AUTO_COMPLETE_API_URL } from '@/constants/api';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import ky from 'ky';
-import { AladinBookApiResponse, AutoCompleteResponse } from '@/types/book';
+import { AutoCompleteResponse } from '@/types/book';
 
 export default async function handler(
   req: NextApiRequest,

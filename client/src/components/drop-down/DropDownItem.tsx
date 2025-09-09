@@ -1,6 +1,6 @@
-import { HandleItemSelectType } from '@/hooks/useDropdownState';
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
+import { HandleItemSelectType } from './Dropdown';
 
 type DropdownItemProps = {
   label: string;
@@ -8,7 +8,11 @@ type DropdownItemProps = {
   handleClick: HandleItemSelectType;
 };
 
-export default function DropdownItem({ label, value, handleClick }: DropdownItemProps) {
+export default function DropdownItem({
+  label,
+  value,
+  handleClick,
+}: DropdownItemProps) {
   return (
     <div
       css={css`

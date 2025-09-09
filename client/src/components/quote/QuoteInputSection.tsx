@@ -15,7 +15,6 @@ export default function QuoteInputSection({
     formState: { errors },
   } = useFormContext<BookQuote>();
 
-  console.log('errors: ', errors);
   const pageNumError = errors.quotes?.[quoteIndex]?.pageNum?.message;
   const quoteError = errors.quotes?.[quoteIndex]?.quote?.message;
 

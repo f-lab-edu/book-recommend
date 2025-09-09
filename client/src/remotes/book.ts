@@ -1,4 +1,4 @@
-import { BOOK_DETAIL_API_URL, BOOK_LIST_API_URL } from '@/constants/api';
+import { BOOK_DETAIL_API_URL, PRODUCT_LIST_API_URL } from '@/constants/api';
 import {
   BookApiResponse,
   AladinBookApiResponse,
@@ -23,58 +23,25 @@ export const getBooks = async (
   return response as BookApiResponse;
 };
 
-// export const getBookList = async (
-//   queryType: QueryType,
-//   filter?: {
-//     start?: number;
-//     maxResults?: number;
-//   },
-// ): Promise<AladinBookApiResponse> => {
-//   try {
-//     const start = filter?.start ?? 1;
-//     const maxResults = filter?.maxResults ?? 5;
-
-//     const response = await api
-//       .get<AladinBookApiResponse>(`api/home?queryType=${queryType}`)
-//       .json();
-
-//     return {
-//       item: response.item,
-//       totalResults: response.totalResults,
-//       startIndex: response.startIndex,
-//       itemsPerPage: response.itemsPerPage,
-//     };
-//   } catch (error) {
-//     console.error('getBookList error:', error);
-//     return {
-//       item: [],
-//       totalResults: 0,
-//       startIndex: 0,
-//       itemsPerPage: 0,
-//     };
-//   }
-// };
-
-export const getBookList = async (
+export const getProductList = async (
   queryType: QueryType,
   filter?: {
     start?: number;
     maxResults?: number;
   },
+  categoryId?: string,
 ): Promise<AladinBookApiResponse> => {
   try {
     const start = filter?.start ?? 1;
     const maxResults = filter?.maxResults ?? 5;
 
-    const response = await aladinApi
-      .get<AladinBookApiResponse>(`${BOOK_LIST_API_URL}`, {
+    const response = await api
+      .get<AladinBookApiResponse>(`api/home`, {
         searchParams: {
-          ...DEFAULT_QUERY_PARAMS,
           QueryType: queryType,
+          CategoryId: categoryId ?? '',
           start: start,
           MaxResults: maxResults,
-          ttbkey: process.env.NEXT_PUBLIC_ALADIN_API_KEY || '',
-          SearchTarget: 'Book',
         },
       })
       .json();
@@ -86,7 +53,7 @@ export const getBookList = async (
       itemsPerPage: response.itemsPerPage,
     };
   } catch (error) {
-    console.error('getBookList error:', error);
+    console.error('getProductList error:', error);
     return {
       item: [],
       totalResults: 0,
@@ -95,6 +62,49 @@ export const getBookList = async (
     };
   }
 };
+
+// export const getProductList = async (
+//   queryType: QueryType,
+//   filter?: {
+//     start?: number;
+//     maxResults?: number;
+//   },
+//   categoryId?: string,
+// ): Promise<AladinBookApiResponse> => {
+//   try {
+//     const start = filter?.start ?? 1;
+//     const maxResults = filter?.maxResults ?? 5;
+
+//     const response = await aladinApi
+//       .get<AladinBookApiResponse>(`${PRODUCT_LIST_API_URL}`, {
+//         searchParams: {
+//           ...DEFAULT_QUERY_PARAMS,
+//           QueryType: queryType,
+//           start: start,
+//           MaxResults: maxResults,
+//           ttbkey: process.env.NEXT_PUBLIC_ALADIN_API_KEY || '',
+//           SearchTarget: 'Book',
+//           CategoryId: categoryId ?? '',
+//         },
+//       })
+//       .json();
+
+//     return {
+//       item: response.item,
+//       totalResults: response.totalResults,
+//       startIndex: response.startIndex,
+//       itemsPerPage: response.itemsPerPage,
+//     };
+//   } catch (error) {
+//     console.error('getProductList error:', error);
+//     return {
+//       item: [],
+//       totalResults: 0,
+//       startIndex: 0,
+//       itemsPerPage: 0,
+//     };
+//   }
+// };
 
 // NextJS API Route 사용
 export const getAutoComplete = async (

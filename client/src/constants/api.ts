@@ -1,4 +1,4 @@
-export const BOOK_LIST_API_URL = `ttb/api/ItemList.aspx?`;
+export const PRODUCT_LIST_API_URL = `ttb/api/ItemList.aspx?`;
 export const AUTO_COMPLETE_API_URL = `search/autocomplete/getAutoComplete.aspx?t=BOOK&s=1`;
 export const BOOK_SEARCH_API_URL =
   'ttb/api/ItemSearch.aspx?&SearchTarget=Book&output=js&Version=20131101';

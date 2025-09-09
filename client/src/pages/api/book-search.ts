@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import ky from 'ky';
-import { AladinBookApiResponse, AutoCompleteResponse } from '@/types/book';
+import { AladinBookApiResponse } from '@/types/book';
 import { BOOK_SEARCH_API_URL } from '@/constants/api';
 
 export default async function handler(

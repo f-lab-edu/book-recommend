@@ -1,7 +1,6 @@
-import { useRouter } from "next/router";
-import { useStepValidation } from "@/hooks/useStepValidation";
-import { css } from "@emotion/react";
-import { useEffect } from "react";
+import { useRouter } from 'next/router';
+import { useStepValidation } from '@/hooks/useStepValidation';
+import { css } from '@emotion/react';
 
 // 페이지 진입 시 client 환경에서 유효성 검사를 위한 컴포넌트
 export default function BookDetailPageValidator({
@@ -27,13 +26,13 @@ export default function BookDetailPageValidator({
         `}
       >
         <div>
-          <h2 style={{ marginBottom: "10px", color: "#e74c3c" }}>
+          <h2 style={{ marginBottom: '10px', color: '#e74c3c' }}>
             오류가 발생했습니다
           </h2>
-          <p style={{ color: "#666", marginBottom: "20px" }}>{error}</p>
+          <p style={{ color: '#666', marginBottom: '20px' }}>{error}</p>
         </div>
         <button
-          onClick={() => router.push("/")}
+          onClick={() => router.push('/')}
           css={css`
             padding: 10px 20px;
             background-color: #3498db;

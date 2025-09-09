@@ -1,7 +1,6 @@
-import { AUTO_COMPLETE_API_URL, BOOK_LIST_API_URL } from '@/constants/api';
+import { PRODUCT_LIST_API_URL } from '@/constants/api';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import ky from 'ky';
-import { AladinBookApiResponse, AutoCompleteResponse } from '@/types/book';
+import { AladinBookApiResponse } from '@/types/book';
 import { aladinApi } from '@/remotes/api';
 
 export default async function handler(
@@ -13,23 +12,35 @@ export default async function handler(
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { queryType } = req.query;
+  const { QueryType, CategoryId, start, MaxResults } = req.query;
 
-  if (queryType == null || typeof queryType !== 'string') {
-    return res.status(400).json({ message: 'QueryType is required' });
+  if (
+    QueryType == null ||
+    typeof QueryType !== 'string' ||
+    CategoryId == null ||
+    typeof CategoryId !== 'string' ||
+    start == null ||
+    typeof start !== 'string' ||
+    MaxResults == null ||
+    typeof MaxResults !== 'string'
+  ) {
+    return res
+      .status(400)
+      .json({ message: 'QueryType and CategoryId is required' });
   }
 
   try {
     const response = await aladinApi
-      .get<AladinBookApiResponse>(`${BOOK_LIST_API_URL}`, {
+      .get<AladinBookApiResponse>(`${PRODUCT_LIST_API_URL}`, {
         searchParams: {
           Output: 'js',
           Version: '20131101',
-          QueryType: queryType,
-          start: 1,
-          MaxResults: 5,
+          QueryType,
+          start,
+          MaxResults,
           ttbkey: process.env.NEXT_PUBLIC_ALADIN_API_KEY || '',
           SearchTarget: 'Book',
+          CategoryId: CategoryId ?? '',
         },
       })
       .json();

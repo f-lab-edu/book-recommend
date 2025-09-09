@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 export default function QuoteActionButtons({
   handleReset,
   handleAddQuote,
-  isSubmitting,
+  // isSubmitting,
 }: {
   handleReset: () => void;
   handleAddQuote: () => void;

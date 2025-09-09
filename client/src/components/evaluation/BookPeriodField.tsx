@@ -14,7 +14,6 @@ import {
   BOOK_STATUS_NONE,
 } from '@/constants/book';
 import RHFDateRangeInput from '../input/RHFDateRangeInput';
-import { bookPeriodRules } from '@/validations/rules/book';
 
 // 독서 상태에 따른 기간 필수 여부 정의
 const getPeriodRequiredStatus = (status: BookStatus) => {
@@ -42,7 +41,7 @@ export default function BookPeriodField() {
   const isPeriodRequired = requiredPeriod.some((isRequired) => isRequired);
   const isEndDateRequired = requiredPeriod[1];
 
-  const { startDate, endDate } = bookPeriodRules;
+  // const { startDate, endDate } = bookPeriodRules;
 
   return (
     <BookStatusPeriodStep.Title

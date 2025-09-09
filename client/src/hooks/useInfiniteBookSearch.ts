@@ -2,7 +2,6 @@ import { getBookSearch } from '@/remotes/book';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { QUERY_KEYS } from '@/lib/query-keys';
-import { AladinBook } from '@/types/book';
 
 export const useInfiniteBookSearch = (maxResults: number) => {
   const [keyword, setKeyword] = useState('');

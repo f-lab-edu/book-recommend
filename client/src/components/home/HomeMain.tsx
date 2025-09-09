@@ -1,7 +1,12 @@
 import BestSellerCarousel from '../carousel/BestSellerCarousel';
 import NewBookList from '../list/NewBookList';
-import RecommendMusicList from '../list/RecommendMusicList';
 import AsyncBoundary from '../boundary/AsyncBoundary';
+import dynamic from 'next/dynamic';
+import RecommendMusicList from '../list/RecommendMusicList';
+
+// const RecommendMusicList = dynamic(() => import('../list/RecommendMusicList'), {
+//   ssr: false,
+// });
 
 const HomeMain = () => {
   return (
@@ -12,13 +17,9 @@ const HomeMain = () => {
       <AsyncBoundary>
         <NewBookList />
       </AsyncBoundary>
-      {/* 
-          TODO
-          Step 3. 추천 음악 리스트 API 연동(viewport 감지 시)
-        */}
-      {/* <AsyncBoundary>
+      <AsyncBoundary>
         <RecommendMusicList />
-      </AsyncBoundary> */}
+      </AsyncBoundary>
     </>
   );
 };

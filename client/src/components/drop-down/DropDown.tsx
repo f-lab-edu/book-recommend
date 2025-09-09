@@ -40,7 +40,7 @@ export default function Dropdown({
     setIsDropdownOpen(false);
   };
 
-  const handleItemSelect: HandleItemSelectType = ({ label, value }) => {
+  const handleItemSelect: HandleItemSelectType = ({ value }) => {
     handleDropdownClose();
     onOptionSelect(value);
   };

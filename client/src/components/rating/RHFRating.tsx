@@ -1,19 +1,27 @@
 import { css } from '@emotion/react';
 import {
   Controller,
-  ControllerRenderProps,
   FieldError,
   FieldValues,
   RegisterOptions,
   useFormContext,
+  Control,
 } from 'react-hook-form';
 import ErrorMessage from '../common/ErrorMessage';
 import { FieldPath } from 'react-hook-form';
 import StarRating from './StarRating';
+import { createContext } from 'react';
 
-type RenderFunction<T extends FieldValues> = (
-  field: ControllerRenderProps<T, FieldPath<T>>,
-) => React.ReactElement;
+const RatingContext = createContext<{
+  name: string;
+  control: unknown;
+  value: number;
+  onChange: (value: number) => void;
+  onBlur: () => void;
+} | null>(null);
+
+type RenderFunction = () // field: ControllerRenderProps<T, FieldPath<T>>,
+=> React.ReactElement;
 
 const RHFRating = <T extends FieldValues>({
   name,
@@ -25,7 +33,7 @@ const RHFRating = <T extends FieldValues>({
     RegisterOptions<T, FieldPath<T>>,
     'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
   >;
-  render?: RenderFunction<T>;
+  render?: RenderFunction;
 }) => {
   const {
     control,
@@ -49,7 +57,19 @@ const RHFRating = <T extends FieldValues>({
         rules={rules}
         render={({ field }) => {
           if (render != undefined) {
-            return render(field);
+            return (
+              <RatingContext.Provider
+                value={{
+                  name,
+                  control,
+                  value: field.value,
+                  onChange: field.onChange,
+                  onBlur: field.onBlur,
+                }}
+              >
+                {render()}
+              </RatingContext.Provider>
+            );
           }
           return <StarRating {...field} />;
         }}
@@ -60,3 +80,4 @@ const RHFRating = <T extends FieldValues>({
 };
 
 export default RHFRating;
+RHFRating.Star = StarRating;

@@ -3,7 +3,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { getBookList } from '@/remotes/book';
+import { getProductList } from '@/remotes/book';
 import Image from 'next/image';
 import { AladinBook, AladinBookApiResponse } from '@/types/book';
 import Link from 'next/link';
@@ -23,7 +23,7 @@ const settings = {
 const BestSellerCarousel = () => {
   const { data } = useSuspenseQuery<AladinBookApiResponse>({
     queryKey: QUERY_KEYS.books.bestseller(),
-    queryFn: () => getBookList('bestseller'),
+    queryFn: () => getProductList('bestseller'),
   });
 
   return (

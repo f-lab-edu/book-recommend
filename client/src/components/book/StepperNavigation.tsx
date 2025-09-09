@@ -22,7 +22,7 @@ export default function StepperNavigation() {
 
   const { handleSubmit } = useFormContext<BookEvaluation>();
 
-  const onSubmit: SubmitHandler<BookEvaluation> = (data) => {
+  const onSubmit: SubmitHandler<BookEvaluation> = () => {
     goNext();
   };
 

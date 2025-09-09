@@ -23,7 +23,7 @@ export default function useDebouncedAutoCompleteInput({
       setDebouncedKeyword(keyword);
     }, delay);
     return () => clearTimeout(timer);
-  }, [keyword]);
+  }, [keyword, delay]);
 
   return useQuery<readonly AutoCompleteResponse[] | null>({
     queryKey: QUERY_KEYS.books.autocomplete(debouncedKeyword),

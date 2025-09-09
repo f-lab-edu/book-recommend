@@ -22,6 +22,7 @@ import { deConcatIsbn, formatDate } from '@/utils/utils';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useBookDetail } from '@/hooks/useBooks';
 import React from 'react';
+import Image from 'next/image';
 
 export default React.memo(function BookDetail({ isbn }: { isbn: string }) {
   const { data: book } = useSuspenseQuery(useBookDetail(deConcatIsbn(isbn)));
@@ -35,8 +36,10 @@ export default React.memo(function BookDetail({ isbn }: { isbn: string }) {
       <div css={headerStyle}>
         <div css={coverStyle}>
           {book.cover != '' ? (
-            <img
+            <Image
               src={book.cover}
+              width={120}
+              height={160}
               alt={book.title}
               css={imageStyle}
             />

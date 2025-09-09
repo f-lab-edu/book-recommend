@@ -11,7 +11,10 @@ const BookRatingStep = () => {
       `}
     >
       <h2>독서 추천 여부</h2>
-      <RHFRating name={'rating'} />
+      <RHFRating
+        name={'rating'}
+        // render={() => <input />}
+      />
     </div>
   );
 };

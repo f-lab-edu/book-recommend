@@ -1,11 +1,9 @@
 import { css } from '@emotion/react';
-import { AladinBook, Book } from '@/types/book';
-import Loading from '../common/Loading';
-import ErrorMessage from '../common/ErrorMessage';
+import { AladinBook } from '@/types/book';
 import { theme } from '@/theme';
-import BookCard from '../book/BookCard';
 import Grid from '../layout/Grid';
 import InfiniteScroll from '../common/InfiniteScroll';
+import ProductCard from '../book/ProductCard';
 
 interface SearchResultsProps {
   results: AladinBook[];
@@ -32,9 +30,9 @@ const SearchResults = ({
       <Grid cols={2}>
         {results.length > 0 ? (
           results.map((result) => (
-            <BookCard
+            <ProductCard
               key={result.isbn}
-              book={result}
+              product={result}
             />
           ))
         ) : (

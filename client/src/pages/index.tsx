@@ -1,5 +1,3 @@
-import BookList from '@/components/book/BookList';
-import { BookListErrorFallback } from '@/components/common/ErrorFallbacks';
 import HomeMain from '@/components/home/HomeMain';
 
 import Head from 'next/head';
@@ -10,7 +8,7 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 import { dehydrate } from '@tanstack/react-query';
-import { getBookList } from '@/remotes/book';
+import { getProductList } from '@/remotes/book';
 import { QUERY_KEYS } from '@/lib/query-keys';
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -20,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       // Promise.reject(new Error('Something wrong')),
       queryClient.prefetchQuery({
         queryKey: QUERY_KEYS.books.bestseller(),
-        queryFn: () => getBookList('bestseller'),
+        queryFn: () => getProductList('bestseller'),
         // queryFn: () => {
         //   throw new Error('Something wrong');
         // },
@@ -28,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
       queryClient.prefetchQuery({
         queryKey: QUERY_KEYS.books.newbooks(),
-        queryFn: () => getBookList('ItemNewSpecial', { maxResults: 4 }),
+        queryFn: () => getProductList('ItemNewSpecial', { maxResults: 4 }),
       }),
     ]);
 
@@ -56,10 +54,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 export default function Home({
   dehydratedState,
-  error,
 }: {
   dehydratedState: DehydratedState;
-  error: { message: string };
 }) {
   return (
     <>

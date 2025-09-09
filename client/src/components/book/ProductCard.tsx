@@ -10,8 +10,8 @@ import React, { useState } from 'react';
 import { css } from '@emotion/react';
 import { theme } from '@/theme';
 
-type BookCardProps = {
-  book: AladinBook;
+type ProductCardProps = {
+  product: AladinBook;
 };
 
 // 제목이 너무 길면 줄임
@@ -34,19 +34,21 @@ const formatPrice = (price: number) => {
 const placeholderImage =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='160' viewBox='0 0 120 160'%3E%3Crect width='120' height='160' fill='%23f0f0f0'/%3E%3Ctext x='60' y='80' font-family='Arial' font-size='14' fill='%23999' text-anchor='middle'%3E책 표지%3C/text%3E%3C/svg%3E";
 
-const BookCard = React.memo(
-  ({ book }: BookCardProps) => {
+const ProductCard = React.memo(
+  ({ product }: ProductCardProps) => {
     const [imageError, setImageError] = useState(false);
 
     return (
-      <Link href={`/books/${concatIsbn(book.isbn)}?step=1&itemIdType=ISBN`}>
+      <Link href={`/books/${concatIsbn(product.isbn)}?step=1&itemIdType=ISBN`}>
         <div css={bookCardStyle}>
           <div css={bookImageContainerStyle}>
             <Image
               src={
-                imageError ? placeholderImage : book.cover || placeholderImage
+                imageError
+                  ? placeholderImage
+                  : product.cover || placeholderImage
               }
-              alt={book.title}
+              alt={product.title}
               width={120}
               height={160}
               style={{
@@ -54,6 +56,7 @@ const BookCard = React.memo(
                 borderRadius: '8px',
                 width: '100%',
                 height: '100%',
+                aspectRatio: '1/1',
               }}
               onError={() => setImageError(true)}
             />
@@ -75,7 +78,7 @@ const BookCard = React.memo(
               text-overflow: ellipsis;
             `}
           >
-            {truncateTitle(book.title)}
+            {truncateTitle(product.title)}
           </div>
           <div
             css={css`
@@ -88,7 +91,7 @@ const BookCard = React.memo(
               text-overflow: ellipsis;
             `}
           >
-            {getMainAuthor(book.author)}
+            {getMainAuthor(product.author)}
           </div>
           <div
             css={css`
@@ -100,7 +103,7 @@ const BookCard = React.memo(
               text-overflow: ellipsis;
             `}
           >
-            {book.publisher}
+            {product.publisher}
           </div>
           <div
             css={css`
@@ -111,7 +114,7 @@ const BookCard = React.memo(
               text-align: right;
             `}
           >
-            {formatPrice(book.priceSales)}원
+            {formatPrice(product.priceSales)}원
           </div>
         </div>
       </Link>
@@ -119,15 +122,15 @@ const BookCard = React.memo(
   },
   (prevProps, nextProps) => {
     return (
-      prevProps.book.title === nextProps.book.title &&
-      prevProps.book.priceSales === nextProps.book.priceSales &&
-      prevProps.book.cover === nextProps.book.cover &&
-      prevProps.book.author === nextProps.book.author &&
-      prevProps.book.publisher === nextProps.book.publisher
+      prevProps.product.title === nextProps.product.title &&
+      prevProps.product.priceSales === nextProps.product.priceSales &&
+      prevProps.product.cover === nextProps.product.cover &&
+      prevProps.product.author === nextProps.product.author &&
+      prevProps.product.publisher === nextProps.product.publisher
     );
   },
 );
 
-BookCard.displayName = 'BookCard';
+ProductCard.displayName = 'ProductCard';
 
-export default BookCard;
+export default ProductCard;

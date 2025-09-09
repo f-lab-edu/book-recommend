@@ -1,14 +1,14 @@
-import { getBookList } from '@/remotes/book';
+import { getProductList } from '@/remotes/book';
 import { css } from '@emotion/react';
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/lib/query-keys';
 import Grid from '../layout/Grid';
-import BookCard from '../book/BookCard';
+import ProductCard from '../book/ProductCard';
 
 const NewBookList = () => {
   const { data } = useQuery({
     queryKey: QUERY_KEYS.books.newbooks(),
-    queryFn: () => getBookList('ItemNewSpecial'),
+    queryFn: () => getProductList('ItemNewSpecial', { maxResults: 4 }),
   });
 
   return (
@@ -38,9 +38,9 @@ const NewBookList = () => {
         `}
       >
         {data?.item.map((book) => (
-          <BookCard
+          <ProductCard
             key={book.isbn}
-            book={book}
+            product={book}
           />
         ))}
       </Grid>
