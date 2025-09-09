@@ -11,9 +11,8 @@ const BookSearchList = () => {
   const router = useRouter();
 
   const {
-    data: searchResults,
+    searchResults,
     isFetchingNextPage,
-    error,
     fetchNextPage,
     hasNextPage,
     setKeyword,

@@ -1,7 +1,8 @@
 import { getBookSearch } from '@/remotes/book';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { QUERY_KEYS } from '@/lib/query-keys';
+import { AladinBook } from '@/types/book';
 
 export const useInfiniteBookSearch = (maxResults: number) => {
   const [keyword, setKeyword] = useState('');
@@ -13,7 +14,7 @@ export const useInfiniteBookSearch = (maxResults: number) => {
     }
   };
 
-  const infiniteQuery = useInfiniteQuery({
+  const infiniteQuery = useSuspenseInfiniteQuery({
     queryKey: QUERY_KEYS.books.infinite(query, maxResults),
     queryFn: ({ pageParam = 1 }) => getBookSearch(query, pageParam, maxResults),
     initialPageParam: 1,
@@ -23,11 +24,11 @@ export const useInfiniteBookSearch = (maxResults: number) => {
         : undefined;
     },
     select: (data) => data.pages.flatMap((page) => page.item),
-    enabled: query.trim().length > 0, // query가 있을 때만 실행
   });
 
   return {
     ...infiniteQuery,
+    searchResults: infiniteQuery.data,
     setKeyword,
     keyword,
     handleSearch,
