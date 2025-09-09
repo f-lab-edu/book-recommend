@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-const RecommenMusicList = () => {
+const RecommendMusicList = () => {
   return (
     <section>
       <h2
@@ -18,4 +18,4 @@ const RecommenMusicList = () => {
   );
 };
 
-export default RecommenMusicList;
+export default RecommendMusicList;

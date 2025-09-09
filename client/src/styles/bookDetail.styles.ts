@@ -1,7 +1,7 @@
-import { css } from "@emotion/react";
+import { css } from '@emotion/react';
 
 export const cardStyle = css`
-  width: 600px;
+  width: 100%;
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

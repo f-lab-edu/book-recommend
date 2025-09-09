@@ -1,6 +1,5 @@
 import BookList from '@/components/book/BookList';
 import { BookListErrorFallback } from '@/components/common/ErrorFallbacks';
-import SuspenseBoundary from '@/components/common/SuspenseBoundary';
 import HomeMain from '@/components/home/HomeMain';
 
 import Head from 'next/head';
@@ -75,9 +74,8 @@ export default function Home({
           content="width=device-width, initial-scale=1"
         />
       </Head>
-
       <HydrationBoundary state={dehydratedState}>
-        <HomeMain error={error} />
+        <HomeMain />
       </HydrationBoundary>
 
       {/* <SuspenseBoundary

@@ -1,15 +1,20 @@
-import Loading from "./Loading";
-import { useCallback } from "react";
-import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
-import { infiniteScrollStyle } from "@/styles/common.styles";
+import Loading from './Loading';
+import { useCallback } from 'react';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import { css } from '@emotion/react';
+import { theme } from '@/theme';
 
 type InfiniteScrollProps = {
-  isLoading: boolean;
+  isLoadMore: boolean;
   hasNextPage: boolean;
   fetchNextPage: () => void;
-}
+};
 
-const InfiniteScroll = ({ isLoading, hasNextPage, fetchNextPage }: InfiniteScrollProps) => {
+const InfiniteScroll = ({
+  isLoadMore,
+  hasNextPage,
+  fetchNextPage,
+}: InfiniteScrollProps) => {
   const { observerRef } = useIntersectionObserver({
     onIntersect: useCallback(() => {
       if (hasNextPage) {
@@ -20,14 +25,20 @@ const InfiniteScroll = ({ isLoading, hasNextPage, fetchNextPage }: InfiniteScrol
 
   return (
     <>
-      {isLoading && (
-        <div css={infiniteScrollStyle}>
+      {isLoadMore && (
+        <div
+          css={css`
+            display: flex;
+            justify-content: center;
+            margin: ${theme.spacing.md} 0;
+          `}
+        >
           <Loading />
-        </div>)}
+        </div>
+      )}
       <div ref={observerRef} />
     </>
+  );
+};
 
-  )
-}
-
-export default InfiniteScroll
+export default InfiniteScroll;

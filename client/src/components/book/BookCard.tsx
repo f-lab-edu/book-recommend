@@ -14,32 +14,32 @@ type BookCardProps = {
   book: AladinBook;
 };
 
+// 제목이 너무 길면 줄임
+const truncateTitle = (title: string, maxLength: number = 25) => {
+  if (title.length <= maxLength) return title;
+  return title.substring(0, maxLength) + '...';
+};
+
+// 저자가 여러 명이면 첫 번째만 표시
+const getMainAuthor = (author: string) => {
+  return author.split(',')[0].trim();
+};
+
+// 가격을 천 단위로 포맷팅
+const formatPrice = (price: number) => {
+  return price.toLocaleString('ko-KR');
+};
+
+// 기본 placeholder 이미지 (SVG 데이터 URL)
+const placeholderImage =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='160' viewBox='0 0 120 160'%3E%3Crect width='120' height='160' fill='%23f0f0f0'/%3E%3Ctext x='60' y='80' font-family='Arial' font-size='14' fill='%23999' text-anchor='middle'%3E책 표지%3C/text%3E%3C/svg%3E";
+
 const BookCard = React.memo(
   ({ book }: BookCardProps) => {
     const [imageError, setImageError] = useState(false);
 
-    // 제목이 너무 길면 줄임
-    const truncateTitle = (title: string, maxLength: number = 25) => {
-      if (title.length <= maxLength) return title;
-      return title.substring(0, maxLength) + '...';
-    };
-
-    // 저자가 여러 명이면 첫 번째만 표시
-    const getMainAuthor = (author: string) => {
-      return author.split(',')[0].trim();
-    };
-
-    // 가격을 천 단위로 포맷팅
-    const formatPrice = (price: number) => {
-      return price.toLocaleString('ko-KR');
-    };
-
-    // 기본 placeholder 이미지 (SVG 데이터 URL)
-    const placeholderImage =
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='160' viewBox='0 0 120 160'%3E%3Crect width='120' height='160' fill='%23f0f0f0'/%3E%3Ctext x='60' y='80' font-family='Arial' font-size='14' fill='%23999' text-anchor='middle'%3E책 표지%3C/text%3E%3C/svg%3E";
-
     return (
-      <Link href={`/books/${concatIsbn(book.isbn)}?step=1`}>
+      <Link href={`/books/${concatIsbn(book.isbn)}?step=1&itemIdType=ISBN`}>
         <div css={bookCardStyle}>
           <div css={bookImageContainerStyle}>
             <Image

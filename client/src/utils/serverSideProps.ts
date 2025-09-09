@@ -4,12 +4,14 @@ import { dehydrate } from '@tanstack/react-query';
 import { getBookDetail } from '@/remotes/book';
 import { QUERY_KEYS } from '@/hooks/useBooks';
 import { deConcatIsbn } from './utils';
+import { ItemIdType } from '@/types/book';
 
 export const createBookDetailServerSideProps = (): GetServerSideProps => {
   return async ({ params, query }) => {
     const queryClient = new QueryClient();
     const isbn = params?.isbn as string;
     const step = query?.step as string;
+    const itemIdType = (query?.itemIdType || 'ItemId') as ItemIdType;
 
     // 서버 사이드 validation
     if (isbn == null || isbn === '') {
@@ -36,7 +38,7 @@ export const createBookDetailServerSideProps = (): GetServerSideProps => {
     // 데이터 prefetch
     await queryClient.prefetchQuery({
       queryKey: [QUERY_KEYS.BOOK, QUERY_KEYS.DETAIL, splitedIsbn] as const,
-      queryFn: () => getBookDetail(splitedIsbn),
+      queryFn: () => getBookDetail(splitedIsbn, itemIdType),
     });
 
     return {

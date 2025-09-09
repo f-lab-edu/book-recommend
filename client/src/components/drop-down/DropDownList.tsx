@@ -1,33 +1,51 @@
-import { HandleItemSelectType } from '@/hooks/useDropdownState';
+import { HandleItemSelectType } from './Dropdown';
 
 import DropdownItem from './DropdownItem';
 import { theme } from '@/theme';
 import { css } from '@emotion/react';
+import Loading from '../common/Loading';
 
 type DropdownListProps = {
   options: readonly { label: string; value: string }[];
   handleClick: HandleItemSelectType;
+  isFetching?: boolean;
 };
 
 export default function DropdownList({
   options,
   handleClick,
+  isFetching,
 }: DropdownListProps) {
   return (
     <div
       css={css`
         position: absolute;
-        top: 100%;
+        top: 0;
         left: 0;
-        right: 0;
-        background: white;
-        border-top: none;
-        border-radius: 0 0 ${theme.borderRadius.sm} ${theme.borderRadius.sm};
+        border: ${options.length > 0 || isFetching
+          ? '1px solid ' + theme.colors.secondary
+          : 'none'};
+        width: 100%;
+        height: ${isFetching ? '200px' : 'auto'};
         max-height: 200px;
         overflow-y: auto;
-        z-index: 1000;
+        background: white;
+        z-index: 10;
       `}
     >
+      {isFetching && (
+        <div
+          css={css`
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+          `}
+        >
+          <Loading />
+        </div>
+      )}
       {options.map((option) => (
         <DropdownItem
           key={option.value}
