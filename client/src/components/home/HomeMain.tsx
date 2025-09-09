@@ -1,14 +1,13 @@
-import { css } from '@emotion/react';
 import BestSellerCarousel from '../carousel/BestSellerCarousel';
 import NewBookList from '../list/NewBookList';
 import RecommendMusicList from '../list/RecommendMusicList';
 import AsyncBoundary from '../boundary/AsyncBoundary';
 
-const HomeMain = ({ error }: { error: { message: string } }) => {
+const HomeMain = () => {
   return (
     <>
       <AsyncBoundary>
-        <BestSellerCarousel error={error} />
+        <BestSellerCarousel />
       </AsyncBoundary>
       <AsyncBoundary>
         <NewBookList />

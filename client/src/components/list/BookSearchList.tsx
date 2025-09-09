@@ -45,7 +45,6 @@ const BookSearchList = () => {
       <SearchResults
         results={searchResults || []}
         isLoadMore={isFetchingNextPage}
-        error={error}
         fetchNextPage={fetchNextPage}
         hasNextPage={hasNextPage}
       />

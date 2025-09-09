@@ -1,4 +1,5 @@
 import BookSearchList from '@/components/list/BookSearchList';
+import AsyncBoundary from '@/components/boundary/AsyncBoundary';
 
 export default function BookSearchPage() {
   /**
@@ -11,5 +12,9 @@ export default function BookSearchPage() {
    * 6. 키워드 검색 목록 리스트 무한 스크롤 구현
    * 7. 검색 목록 이미지 최적화 & LCP 개선
    */
-  return <BookSearchList />;
+  return (
+    <AsyncBoundary>
+      <BookSearchList />
+    </AsyncBoundary>
+  );
 }
