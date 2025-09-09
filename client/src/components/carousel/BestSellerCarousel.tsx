@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { getBookList } from '@/remotes/book';
 import Image from 'next/image';
 import { AladinBook, AladinBookApiResponse } from '@/types/book';
@@ -20,16 +20,8 @@ const settings = {
   arrows: true,
 };
 
-type BestSellerCarouselProps = {
-  error: { message: string };
-};
-
-const BestSellerCarousel = ({ error }: BestSellerCarouselProps) => {
-  if (error?.message != null) {
-    throw new Error(error.message);
-  }
-
-  const { data } = useQuery<AladinBookApiResponse>({
+const BestSellerCarousel = () => {
+  const { data } = useSuspenseQuery<AladinBookApiResponse>({
     queryKey: QUERY_KEYS.books.bestseller(),
     queryFn: () => getBookList('bestseller'),
   });
