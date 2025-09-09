@@ -41,7 +41,6 @@ const SearchResults = ({
           <>검색 결과가 없습니다.</>
         )}
       </Grid>
-      {isLoadMore && <Loading />}
       <InfiniteScroll
         isLoadMore={isLoadMore}
         hasNextPage={hasNextPage}
