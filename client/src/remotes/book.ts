@@ -23,6 +23,38 @@ export const getBooks = async (
   return response as BookApiResponse;
 };
 
+// export const getBookList = async (
+//   queryType: QueryType,
+//   filter?: {
+//     start?: number;
+//     maxResults?: number;
+//   },
+// ): Promise<AladinBookApiResponse> => {
+//   try {
+//     const start = filter?.start ?? 1;
+//     const maxResults = filter?.maxResults ?? 5;
+
+//     const response = await api
+//       .get<AladinBookApiResponse>(`api/home?queryType=${queryType}`)
+//       .json();
+
+//     return {
+//       item: response.item,
+//       totalResults: response.totalResults,
+//       startIndex: response.startIndex,
+//       itemsPerPage: response.itemsPerPage,
+//     };
+//   } catch (error) {
+//     console.error('getBookList error:', error);
+//     return {
+//       item: [],
+//       totalResults: 0,
+//       startIndex: 0,
+//       itemsPerPage: 0,
+//     };
+//   }
+// };
+
 export const getBookList = async (
   queryType: QueryType,
   filter?: {
@@ -95,6 +127,15 @@ export const getBookSearch = async (
   start: number = 1,
   maxResults: number = 10,
 ): Promise<AladinBookApiResponse> => {
+  if (query.trim().length === 0) {
+    return {
+      item: [],
+      totalResults: 0,
+      startIndex: 0,
+      itemsPerPage: 0,
+    };
+  }
+
   const response = await api.get(`api/book-search`, {
     searchParams: {
       Query: query,
